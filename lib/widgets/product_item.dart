@@ -1,44 +1,55 @@
 import 'package:flutter/material.dart';
+import '../providers/product.dart';
+//import 'package:flutter_complete_guide/providers/products.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart.dart';
 
 import '../screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
   //const ProductItem({ Key key }) : super(key: key);
 
-  final String id;
+  /* final String id;
   final String title;
   final String imageUrl;
 
-  ProductItem(this.id, this.title, this.imageUrl);
+  ProductItem(this.id, this.title, this.imageUrl); */
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
+    final cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context)
-              .pushNamed(ProductDetailScreen.routeName, arguments: id);
+              .pushNamed(ProductDetailScreen.routeName, arguments: product.id);
         },
         child: GridTile(
           child: Image.network(
-            imageUrl,
+            product.imageUrl,
             fit: BoxFit.cover,
           ),
           footer: GridTileBar(
             backgroundColor: Colors.black87,
             leading: IconButton(
-              icon: Icon(Icons.favorite),
+              icon: Icon(
+                  product.isFavourite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
-              onPressed: () {},
+              onPressed: () {
+                product.toggleFavouriteStatus();
+              },
             ),
             title: Text(
-              title,
+              product.title,
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product.id, product.price, product.title);
+              },
             ),
           ),
         ),
