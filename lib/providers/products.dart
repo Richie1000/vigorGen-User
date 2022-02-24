@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'product.dart';
+
+import './product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _item = [
+  List<Product> _items = [
     Product(
       id: 'p1',
       title: 'Red Shirt',
@@ -36,36 +37,55 @@ class Products with ChangeNotifier {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
   ];
-
-  var showFavouritesOnly = false;
+  // var _showFavoritesOnly = false;
 
   List<Product> get items {
-    /* if (showFavouritesOnly) {
-      return _item.where((prodItem) => prodItem.isFavourite).toList();
-    } */
-    return [..._item];
+    return [..._items];
   }
 
-  List<Product> get favouriteItems {
-    return _item.where((prodItem) => prodItem.isFavourite).toList();
+  List<Product> get favoriteItems {
+    return _items.where((prodItem) => prodItem.isFavourite).toList();
   }
 
   Product findById(String id) {
-    return _item.firstWhere((prod) => prod.id == id);
+    return _items.firstWhere((prod) => prod.id == id);
   }
 
-  /* void showFavouriteOnly() {
-    showFavouritesOnly = true;
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
+
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
+
+  void addProduct(Product product) {
+    final newProduct = Product(
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      id: DateTime.now().toString(),
+    );
+    _items.add(newProduct);
+    // _items.insert(0, newProduct); // at the start of the list
     notifyListeners();
   }
 
-  void showAll() {
-    showFavouritesOnly = false;
-    notifyListeners();
-  } */
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
 
-  void addProduct() {
-    //_item.add(value);
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
