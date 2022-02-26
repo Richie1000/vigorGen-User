@@ -70,6 +70,9 @@ class Products with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
@@ -135,7 +138,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     Uri url = Uri.parse(
-        'https://shop-app-d00fc-default-rtdb.firebaseio.com/products/$id');
+        'https://shop-app-d00fc-default-rtdb.firebaseio.com/products/$id.json');
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = items[existingProductIndex];
     _items.removeAt(existingProductIndex);
@@ -151,6 +154,23 @@ class Products with ChangeNotifier {
     //print("executed");
 
     // _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
+  }
+
+  Future<void> addFavorite(String id) async {
+    Uri url = Uri.parse(
+        'https://shop-app-d00fc-default-rtdb.firebaseio.com/products/$id.json');
+    final productIndex = _items.indexWhere((prod) => prod.id == id);
+    var isFavourite = _items[productIndex].isFavourite;
+    isFavourite = !isFavourite;
+    await http.patch(url,
+        body: json.encode({
+          'title': _items[productIndex].title,
+          'description': _items[productIndex].description,
+          'price': _items[productIndex].price,
+          'imageUrl': _items[productIndex].imageUrl,
+          'isFavourite': isFavourite
+        }));
     notifyListeners();
   }
 }

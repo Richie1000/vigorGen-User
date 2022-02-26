@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../providers/product.dart';
+import '../providers/products.dart';
 //import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
@@ -37,7 +38,9 @@ class ProductItem extends StatelessWidget {
               icon: Icon(
                   product.isFavourite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
-              onPressed: () {
+              onPressed: () async {
+                /* await Provider.of<Products>(context, listen: false)
+                    .addFavorite(product.id); */
                 product.toggleFavouriteStatus();
               },
             ),
