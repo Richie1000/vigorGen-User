@@ -61,7 +61,7 @@ class AuthScreen extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        'MyShop',
+                        'Vigor Gen',
                         style: TextStyle(
                           color: Theme.of(context).accentTextTheme.headline6.color,
                           fontSize: 50,
@@ -71,6 +71,17 @@ class AuthScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  /* Container(
+                    child: Text(
+                      "Yout Number One Health products company",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).accentTextTheme.headline6.color,
+                          fontSize: 16,
+                          fontFamily: "Lato"),
+                    ),
+                  ), */
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
                     child: AuthCard(),

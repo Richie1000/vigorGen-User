@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
+<<<<<<< HEAD
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
@@ -44,6 +45,29 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+=======
+        providers: [
+          ChangeNotifierProvider.value(
+            value: Auth(),
+          ),
+          //This provider depends on the immediate previous provider
+          ChangeNotifierProxyProvider<Auth, Products>(
+              update: (context, auth, prevProduct) => Products(
+                    auth.token,
+                    (prevProduct == null || prevProduct.items == null)
+                        ? []
+                        : prevProduct.items,
+                  )),
+          ChangeNotifierProvider.value(
+            value: Cart(),
+          ),
+          ChangeNotifierProvider.value(
+            value: Orders(),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (context, auth, _) => MaterialApp(
+>>>>>>> e2187b3a0d2f3e55246a091af6edaba82de97624
               title: 'MyShop',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(

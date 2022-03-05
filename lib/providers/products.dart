@@ -47,6 +47,10 @@ class Products with ChangeNotifier {
 
   Products(this.authToken, this.userId, this._items);
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   List<Product> get items {
     // if (_showFavoritesOnly) {
     //   return _items.where((prodItem) => prodItem.isFavorite).toList();
@@ -72,10 +76,16 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
+<<<<<<< HEAD
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
         'https://shop-app-d00fc-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString';
+=======
+  Future<void> fetchAndSetProduct() async {
+    Uri url = Uri.parse(
+        'https://shop-app-d00fc-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+>>>>>>> e2187b3a0d2f3e55246a091af6edaba82de97624
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
