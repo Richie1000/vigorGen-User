@@ -1,15 +1,17 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
+import 'dart:async';
 
-import '../models/http_exeption.dart';
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
-
-  static const apiKey = 'AIzaSyBSCyDq_1t6N7GPj74ZObVi4FkyfuYCKts';
+  Timer _authTimer;
 
   bool get isAuth {
     return token != null;
@@ -24,40 +26,92 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String get userId {
+    return _userId;
+  }
+
   Future<void> _authenticate(
-      String email, String password, String address) async {
-    Uri url = Uri.parse('${address}${apiKey}');
+      String email, String password, String urlSegment) async {
+    final url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBSCyDq_1t6N7GPj74ZObVi4FkyfuYCKts';
     try {
-      final response = await http.post(url,
-          body: json.encode({
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
             'email': email,
             'password': password,
-            'returnSecureToken': true
-          }));
-      //print(json.decode(response.body));
+            'returnSecureToken': true,
+          },
+        ),
+      );
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
       _token = responseData['idToken'];
       _userId = responseData['localId'];
-      _expiryDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            responseData['expiresIn'],
+          ),
+        ),
+      );
+      _autoLogout();
       notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({'token': _token, 'userId': _userId, 'expiryDate': _expiryDate.toIso8601String()});
+      prefs.setString('userData', userData);
     } catch (error) {
       throw error;
     }
   }
 
-  Future<void> Signup(String email, String password) async {
-    final String address =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
-    return _authenticate(email, password, address);
+  Future<void> signup(String email, String password) async {
+    return _authenticate(email, password, 'signupNewUser');
   }
 
-  Future<void> Signin(String email, String password) async {
-    final String address =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
-    return _authenticate(email, password, address);
+  Future<void> login(String email, String password) async {
+    return _authenticate(email, password, 'signInWithPassword');
+  }
+
+  Future<bool> tryAutoLogin()async{
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')){
+      return false;
+    }
+    final userExtractedData = json.decode(prefs.getString('userData')) as Map<String, Object>;
+    final expiryDate = DateTime.parse(userExtractedData['expiryDate']);
+
+    if (expiryDate.isBefore(DateTime.now())){
+      return false;
+    }
+    _token = userExtractedData['token'];
+    _userId = userExtractedData['userId'];
+    _expiryDate = expiryDate;
+    notifyListeners();
+    _autoLogout();
+    return true;
+  }
+
+  Future<void> logout()async{
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    if (_authTimer != null){
+      _authTimer.cancel();
+      _authTimer = null;
+    }
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('userData');
+  }
+  void _autoLogout(){
+    if (_authTimer != null){
+      _authTimer.cancel();
+    }
+   final timeToExpiry =  _expiryDate.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }
