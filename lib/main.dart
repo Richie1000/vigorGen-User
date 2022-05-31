@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import './screens/cart_screen.dart';
 import './screens/products_overview_screen.dart';
@@ -14,8 +16,16 @@ import './screens/edit_product_screen.dart';
 import './screens/auth_screen.dart';
 import './widgets/splash_screen.dart';
 import './helpers/custom_route.dart';
+import './screens/lab_services_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async{
+WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
+  runApp(MyApp());
+} 
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -59,13 +69,14 @@ class MyApp extends StatelessWidget {
               home: auth.isAuth ? ProductsOverviewScreen() :FutureBuilder(
                 future: auth.tryAutoLogin(),
                 builder: (context, authResultSnapshot) =>
-                authResultSnapshot.connectionState == ConnectionState.waiting ? SplashScreen() : AuthScreen()),
+                authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : AuthScreen()),
               routes: {
                 ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
                 CartScreen.routeName: (ctx) => CartScreen(),
                 OrdersScreen.routeName: (ctx) => OrdersScreen(),
                 UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
                 EditProductScreen.routeName: (ctx) => EditProductScreen(),
+                LabScreen.routeName: (ctx)=> LabScreen()
               },
             ),
       ),

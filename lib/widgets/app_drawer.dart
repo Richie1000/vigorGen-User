@@ -5,6 +5,7 @@ import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 import '../helpers/custom_route.dart';
+import '../screens/lab_services_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -42,6 +43,16 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context)
                   .pushReplacementNamed(UserProductsScreen.routeName);
             },
+          ),
+           Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Laboratory'),
+            onTap: () {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LabScreen()),
+            );
+            }
           ),
           Divider(),
           ListTile(

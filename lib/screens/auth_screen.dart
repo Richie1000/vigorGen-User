@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
+import '../widgets/splash_screen.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -61,7 +62,7 @@ class AuthScreen extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        'MyShop',
+                        'Vigor Gen',
                         style: TextStyle(
                           color: Theme.of(context).accentTextTheme.headline6.color,
                           fontSize: 50,
