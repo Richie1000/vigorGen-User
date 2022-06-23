@@ -17,7 +17,8 @@ import './screens/auth_screen.dart';
 import './widgets/splash_screen.dart';
 import './helpers/custom_route.dart';
 import './screens/lab_services_screen.dart';
-
+import './providers/labtest.dart';
+import './screens/add_product_screen.dart';
 void main() async{
 WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
+        ChangeNotifierProvider.value(
+          value: LabTest()),
         ChangeNotifierProxyProvider<Auth, Products>(
           update: (ctx, auth, previousProducts) => Products(
                 auth.token,
@@ -76,7 +79,8 @@ class MyApp extends StatelessWidget {
                 OrdersScreen.routeName: (ctx) => OrdersScreen(),
                 UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
                 EditProductScreen.routeName: (ctx) => EditProductScreen(),
-                LabScreen.routeName: (ctx)=> LabScreen()
+                LabScreen.routeName: (ctx)=> LabScreen(),
+                AddProduct.routeName: (ctx)=>AddProduct(),
               },
             ),
       ),

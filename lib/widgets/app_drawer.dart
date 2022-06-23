@@ -6,6 +6,7 @@ import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 import '../helpers/custom_route.dart';
 import '../screens/lab_services_screen.dart';
+import '../screens/add_product_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -46,7 +47,7 @@ class AppDrawer extends StatelessWidget {
           ),
            Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
+            leading: Icon(Icons.water_drop),
             title: Text('Laboratory'),
             onTap: () {Navigator.push(
               context,
@@ -64,6 +65,14 @@ class AppDrawer extends StatelessWidget {
               Provider.of<Auth>(context, listen: false).logout();
             },
           ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.add_box),
+            title: Text("Add Product"),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(AddProduct.routeName);
+            },
+          )
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LabItem{
+class LabItem with ChangeNotifier{
   final double resultItem1;
   final double resultItem2;
   final double resultItem3;
@@ -28,14 +28,16 @@ class LabItem{
   });
 }
 
-class LabTest{
+class LabTest with ChangeNotifier{
   final String id;
   final String title;
   final String price;
+  final String description;
 
   LabTest({
     @required this.id,
     @required this.title,
     @required this.price,
+    @required this.description
   });
 }

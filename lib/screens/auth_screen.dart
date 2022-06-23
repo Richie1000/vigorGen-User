@@ -168,7 +168,9 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         );
       }
     } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
+     
+    } catch (error) {
+       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
@@ -180,10 +182,6 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password.';
       }
-      _showErrorDialog(errorMessage);
-    } catch (error) {
-      const errorMessage =
-          'Could not authenticate you. Please try again later.';
       _showErrorDialog(errorMessage);
     }
 
