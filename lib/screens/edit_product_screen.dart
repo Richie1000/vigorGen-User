@@ -1,3 +1,6 @@
+
+import  'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,11 +15,13 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  File _pickedImage;
   var _editedProduct = Product(
     id: null,
     title: '',
@@ -32,6 +37,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   };
   var _isInit = true;
   var _isLoading = false;
+  
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
 
   @override
   void initState() {

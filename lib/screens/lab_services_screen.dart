@@ -5,20 +5,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../widgets/lab_Item.dart';
+import '../widgets/app_drawer.dart';
 
 class LabScreen extends StatelessWidget {
   static const routeName = "./LabScreen";
   @override
   Widget build(BuildContext context) {
-    double _w = MediaQuery.of(context).size.width;
+    double _width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          title: Text("Go Back"),
+          title: Text("Vigor Gen"),
           centerTitle: true, 
           systemOverlayStyle: SystemUiOverlayStyle.light),
+      drawer: AppDrawer(),
       body: AnimationLimiter(
         child: ListView.builder(
-          padding: EdgeInsets.all(_w / 30),
+          padding: EdgeInsets.all(_width / 30),
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           itemCount: 5,
