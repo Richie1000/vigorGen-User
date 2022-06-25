@@ -8,7 +8,7 @@ class Product with ChangeNotifier {
   final String title;
   final String description;
   final double price;
-  final String imageUrl;
+  String imageUrl;
   bool isFavorite;
 
   Product({
@@ -29,8 +29,8 @@ class Product with ChangeNotifier {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url =
-        'https://shop-app-d00fc-default-rtdb.firebaseio.com/$userId/$id.json?auth=$token';
+    final Uri url =
+        Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/$userId/$id.json?auth=$token');
     try {
       final response = await http.put(
         url,
