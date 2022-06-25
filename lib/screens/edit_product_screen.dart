@@ -1,11 +1,13 @@
-
-import  'dart:io';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
+import '../widgets/image_picker.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -15,13 +17,12 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  File _pickedImage;
+  XFile _pickedImage;
   var _editedProduct = Product(
     id: null,
     title: '',
@@ -37,11 +38,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   };
   var _isInit = true;
   var _isLoading = false;
-  
-  void _selectImage(File pickedImage) {
+
+  void _selectImage(XFile pickedImage) {
     _pickedImage = pickedImage;
   }
-
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async{
     if (_isInit) {
       final productId = ModalRoute.of(context).settings.arguments as String;
       if (productId != null) {
@@ -63,7 +63,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
           // 'imageUrl': _editedProduct.imageUrl,
           'imageUrl': '',
         };
-        _imageUrlController.text = _editedProduct.imageUrl;
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child(DateTime.now().toIso8601String() + '.jpg');
+
+        //manipulating ref to a future so as to await it
+        final File newFile = File(_pickedImage.path);
+        await ref.putFile(newFile);
+
+        //getting image url to work on
+        final url = await ref.getDownloadURL();
+        _imageUrlController.text = url;
       }
     }
     _isInit = false;
@@ -107,23 +118,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child(DateTime.now().toIso8601String() + '.jpg');
+
+        //manipulating ref to a future so as to await it
+       final File newFile = File(_pickedImage.path);
+        await ref.putFile(newFile);
+
+        //getting image url to work on
+        final url = await ref.getDownloadURL();
+        _imageUrlController.text = url;
+        _editedProduct.imageUrl =url;
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
       } catch (error) {
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text('An error occurred!'),
-                content: Text('Something went wrong.'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Okay'),
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                    },
-                  )
-                ],
-              ),
+            title: Text('An error occurred!'),
+            content: Text('Something went wrong.'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ),
         );
       }
       // finally {
@@ -243,70 +267,52 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         );
                       },
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          height: 100,
-                          margin: EdgeInsets.only(
-                            top: 8,
-                            right: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          child: _imageUrlController.text.isEmpty
-                              ? Text('Enter a URL')
-                              : FittedBox(
-                                  child: Image.network(
-                                    _imageUrlController.text,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
-                            keyboardType: TextInputType.url,
-                            textInputAction: TextInputAction.done,
-                            controller: _imageUrlController,
-                            focusNode: _imageUrlFocusNode,
-                            onFieldSubmitted: (_) {
-                              _saveForm();
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter an image URL.';
-                              }
-                              if (!value.startsWith('http') &&
-                                  !value.startsWith('https')) {
-                                return 'Please enter a valid URL.';
-                              }
-                              if (!value.endsWith('.png') &&
-                                  !value.endsWith('.jpg') &&
-                                  !value.endsWith('.jpeg')) {
-                                return 'Please enter a valid image URL.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = Product(
-                                title: _editedProduct.title,
-                                price: _editedProduct.price,
-                                description: _editedProduct.description,
-                                imageUrl: value,
-                                id: _editedProduct.id,
-                                isFavorite: _editedProduct.isFavorite,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20
                     ),
+                    Row(
+                        //crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Container(child: UserImagePicker(_selectImage ) )
+                        ]),
+
+                    // Expanded(
+                    //   child: TextFormField(
+                    //     decoration: InputDecoration(labelText: 'Image URL'),
+                    //     keyboardType: TextInputType.url,
+                    //     textInputAction: TextInputAction.done,
+                    //     controller: _imageUrlController,
+                    //     focusNode: _imageUrlFocusNode,
+                    //     onFieldSubmitted: (_) {
+                    //       _saveForm();
+                    //     },
+                    //     validator: (value) {
+                    //       if (value.isEmpty) {
+                    //         return 'Please enter an image URL.';
+                    //       }
+                    //       if (!value.startsWith('http') &&
+                    //           !value.startsWith('https')) {
+                    //         return 'Please enter a valid URL.';
+                    //       }
+                    //       if (!value.endsWith('.png') &&
+                    //           !value.endsWith('.jpg') &&
+                    //           !value.endsWith('.jpeg')) {
+                    //         return 'Please enter a valid image URL.';
+                    //       }
+                    //       return null;
+                    //     },
+                    //     onSaved: (value) {
+                    //       _editedProduct = Product(
+                    //         title: _editedProduct.title,
+                    //         price: _editedProduct.price,
+                    //         description: _editedProduct.description,
+                    //         imageUrl: value,
+                    //         id: _editedProduct.id,
+                    //         isFavorite: _editedProduct.isFavorite,
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
