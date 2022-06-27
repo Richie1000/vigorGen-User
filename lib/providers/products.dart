@@ -106,6 +106,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
+    
     final Uri url =
         Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/products.json?auth=$authToken');
         

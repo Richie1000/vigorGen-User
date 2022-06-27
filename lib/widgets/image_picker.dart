@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class UserImagePicker extends StatefulWidget {
   UserImagePicker(this.imagePickFn);
@@ -15,6 +16,7 @@ class UserImagePicker extends StatefulWidget {
 class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage;
   final ImagePicker _picker = ImagePicker();
+  var isOpen = false;
 
   void _pickImageFromCamera() async {
     final XFile pickedImageFile =
@@ -24,6 +26,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
       _pickedImage = file;
     });
     widget.imagePickFn(pickedImageFile);
+     Navigator.of(context).pop();
   }
 
   void _pickImageFromGallery() async {
@@ -34,6 +37,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
       _pickedImage = file;
     });
     widget.imagePickFn(pickedImageFile);
+     Navigator.of(context).pop();
   }
 
   void _showPrompt() {
@@ -49,6 +53,49 @@ class _UserImagePickerState extends State<UserImagePicker> {
                 )
               ],
             ));
+  }
+
+  void _showModalSheet(){
+    showModalBottomSheet(
+      isDismissible: true,
+      isScrollControlled: true,
+  context: context,
+  builder: (context) => Wrap(
+      children: [
+        Column(
+      children: [
+        TextButton(
+          child: Row(children: [
+            Icon(Icons.camera),
+            SizedBox(width: 5),
+            Text("Camera")
+          ],),
+          onPressed:
+            _pickImageFromCamera
+        ),
+        Divider(),
+        TextButton(
+          onPressed: _pickImageFromGallery,
+          child: Row(
+            children: [
+              Icon(Icons.file_open_outlined),
+              SizedBox(width: 5),
+              Text("Gallery")
+            ]
+          )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed:() {Navigator.of(context).pop();}
+            )
+          ]
+        )
+      ],
+    ),
+  ]),
+);
   }
 
   @override
@@ -68,7 +115,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
         ),),
         FlatButton.icon(
           textColor: Theme.of(context).primaryColor,
-          onPressed: _showPrompt,
+          onPressed: _showModalSheet,
           icon: Icon(Icons.image),
           label: Text('Add Image'),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
+import '../providers/cart.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   // final String title;
@@ -19,7 +20,7 @@ class ProductDetailScreen extends StatelessWidget {
       listen: false,
     ).findById(productId);
     return Scaffold(
-     /*  appBar: AppBar(
+      /*  appBar: AppBar(
         title: Text(loadedProduct.title),
       ), */
       body: CustomScrollView(
@@ -29,43 +30,52 @@ class ProductDetailScreen extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(loadedProduct.title),
-              background:  Hero(
+              background: Hero(
                 tag: loadedProduct.id,
                 child: Image.network(
                   loadedProduct.imageUrl,
                   fit: BoxFit.cover,
                 ),
-              ), 
+              ),
             ),
           ),
-          SliverList(delegate: SliverChildListDelegate([
-            SizedBox(height: 10),
-            Text(
-              '\$${loadedProduct.price}',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-              ),
-              textAlign: TextAlign.center,
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                SizedBox(height: 10),
+                Text(
+                  '\$${loadedProduct.price}',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  width: double.infinity,
+                  child: Text(
+                    loadedProduct.description,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ),
+                SizedBox(
+                  height: 800,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Text(
-                loadedProduct.description,
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-            SizedBox(
-              height: 800,
-            )
-          ]))
+          )
         ],
-        
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        child: Icon(Icons.shopping_cart),
+        onPressed: () => Provider.of<Cart>(context, listen: false).addItem(
+            loadedProduct.id, loadedProduct.price, loadedProduct.title),
       ),
     );
   }

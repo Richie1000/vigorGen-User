@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class LabTest with ChangeNotifier{
-  final String id;
+   String id;
   final String title;
-  final String price;
+  final double price;
   final String description;
+   String labImage;
 
   LabTest({
     @required this.id,
     @required this.title,
     @required this.price,
-    @required this.description
+    @required this.description,
+    @required this.labImage
   });
 }

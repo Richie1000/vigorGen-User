@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/add_lab_service.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
@@ -6,7 +7,6 @@ import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 import '../helpers/custom_route.dart';
 import '../screens/lab_services_screen.dart';
-import '../screens/add_product_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -68,9 +68,9 @@ class AppDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.add_box),
-            title: Text("Add Product"),
+            title: Text("Add Lab Service"),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed(AddProduct.routeName);
+              Navigator.of(context).pushReplacementNamed(AddLabService.routeName);
             },
           )
         ],

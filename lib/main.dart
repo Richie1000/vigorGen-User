@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import './screens/cart_screen.dart';
 import './screens/products_overview_screen.dart';
@@ -12,13 +13,13 @@ import './providers/orders.dart';
 import './providers/auth.dart';
 import './screens/orders_screen.dart';
 import './screens/user_products_screen.dart';
-import './screens/edit_product_screen.dart';
+import 'screens/add_product_screen.dart';
 import './screens/auth_screen.dart';
 import './widgets/splash_screen.dart';
 import './helpers/custom_route.dart';
 import './screens/lab_services_screen.dart';
 import './providers/labtest.dart';
-import './screens/add_product_screen.dart';
+import 'screens/add_lab_service.dart';
 void main() async{
 WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
                 UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
                 EditProductScreen.routeName: (ctx) => EditProductScreen(),
                 LabScreen.routeName: (ctx)=> LabScreen(),
-                AddProduct.routeName: (ctx)=>AddProduct(),
+                AddLabService.routeName: (ctx)=>AddLabService(),
               },
             ),
       ),
