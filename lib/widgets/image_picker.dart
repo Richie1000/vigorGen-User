@@ -16,7 +16,10 @@ class UserImagePicker extends StatefulWidget {
 class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage;
   final ImagePicker _picker = ImagePicker();
+<<<<<<< HEAD
   var isOpen = false;
+=======
+>>>>>>> master
 
   void _pickImageFromCamera() async {
     final XFile pickedImageFile =
