@@ -33,7 +33,7 @@ class LabScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: lab.length,
             itemBuilder: (context, index) => LabItem(
-              id: (lab[index].data() as Map<String, dynamic>)['Name'],
+              id: (lab[index].data() as Map<String, dynamic>)['id'],
               title: (lab[index].data() as Map<String, dynamic>)['Name'], 
               description: (lab[index].data() as Map<String, dynamic>)['Description'], 
               price: (lab[index].data() as Map<String, dynamic>)['Price']));

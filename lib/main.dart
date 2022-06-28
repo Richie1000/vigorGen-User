@@ -20,6 +20,9 @@ import './helpers/custom_route.dart';
 import './screens/lab_services_screen.dart';
 import './providers/labtest.dart';
 import 'screens/add_lab_service.dart';
+import 'screens/manage_labs_screen.dart';
+import 'screens/edit_labs_screen.dart';
+
 void main() async{
 WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
@@ -82,6 +85,8 @@ class MyApp extends StatelessWidget {
                 EditProductScreen.routeName: (ctx) => EditProductScreen(),
                 LabScreen.routeName: (ctx)=> LabScreen(),
                 AddLabService.routeName: (ctx)=>AddLabService(),
+                ManageLabs.routeName: (ctx) =>ManageLabs(),
+                EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
               },
             ),
       ),

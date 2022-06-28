@@ -7,6 +7,7 @@ import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 import '../helpers/custom_route.dart';
 import '../screens/lab_services_screen.dart';
+import '../screens/manage_labs_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -48,11 +49,27 @@ class AppDrawer extends StatelessWidget {
            Divider(),
           ListTile(
             leading: Icon(Icons.water_drop),
-            title: Text('Laboratory'),
+            title: Text('Request Laboratory Test'),
             onTap: () {Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LabScreen()),
             );
+            }
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.add_box),
+            title: Text("Add Lab Service"),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(AddLabService.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.science_outlined),
+            title: Text("Manage Lab Services"),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(ManageLabs.routeName);
             }
           ),
           Divider(),
@@ -65,14 +82,8 @@ class AppDrawer extends StatelessWidget {
               Provider.of<Auth>(context, listen: false).logout();
             },
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.add_box),
-            title: Text("Add Lab Service"),
-            onTap: (){
-              Navigator.of(context).pushReplacementNamed(AddLabService.routeName);
-            },
-          )
+
+          
         ],
       ),
     );

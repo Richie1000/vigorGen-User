@@ -104,7 +104,7 @@ class _LabItemState extends State<LabItem> {
                           children: [
                             IconButton(
                               icon: Icon(Icons.shopping_cart),
-                              onPressed: () => Provider.of<Cart>(context, listen: false).addItem(widget.id, widget.price, widget.title),
+                              onPressed: () => Provider.of<Cart>(context, listen: false).addLabItem(widget.id, widget.price, widget.title),
                             ),
                           ],
                         )

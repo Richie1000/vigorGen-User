@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../widgets/app_drawer.dart';
 import '../widgets/products_grid.dart';
@@ -47,6 +48,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     }
     _isInit = false;
     super.didChangeDependencies();
+  }
+  Future<void>_refreshHanndler ()async{
+    return await Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
   }
 
   @override
@@ -96,13 +104,18 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: _isLoading
-          ? Center(
-              child: SpinKitDualRing(
-                color: Theme.of(context).primaryColor,
-              ),
-            )
-          : ProductsGrid(_showOnlyFavorites),
+      body: LiquidPullToRefresh(
+        color: Theme.of(context).primaryColor,
+        animSpeedFactor: 1.5,
+        onRefresh: _refreshHanndler,
+              child: _isLoading
+            ? Center(
+                child: SpinKitDualRing(
+                  color: Theme.of(context).primaryColor,
+                ),
+              )
+            : ProductsGrid(_showOnlyFavorites),
+      ),
     );
   }
 }

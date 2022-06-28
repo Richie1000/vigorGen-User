@@ -62,6 +62,22 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
+  void addLabItem(
+    String productId,
+    double price,
+    String title,
+
+  ){
+    _items.putIfAbsent(
+        productId,
+        () => CartItem(
+              id: DateTime.now().toString(),
+              title: title,
+              price: price,
+              quantity: 1,
+            ),
+      );
+  }
 
   void removeItem(String productId) {
     _items.remove(productId);

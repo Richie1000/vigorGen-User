@@ -39,31 +39,26 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (ctx, product, _) => IconButton(
-                  icon: Icon(
-                    product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  ),
-                  color: Theme.of(context).accentColor,
-                  onPressed: () {
-                    product.toggleFavoriteStatus(
-                      authData.token,
-                      authData.userId,
-                    );
-                  },
-                ),
-          ),
-          title: Column(
-                      children: [
-                        Wrap(
-                          children: [Text(
+          // leading: Consumer<Product>(
+          //   builder: (ctx, product, _) => IconButton(
+          //         icon: Icon(
+          //           product.isFavorite ? Icons.favorite : Icons.favorite_border,
+          //         ),
+          //         color: Theme.of(context).accentColor,
+          //         onPressed: () {
+          //           product.toggleFavoriteStatus(
+          //             authData.token,
+          //             authData.userId,
+          //           );
+          //         },
+          //       ),
+          // ),
+          title: Text(
               product.title,
               //overflow: TextOv,
               //textAlign: TextAlign.center,
-              //softWrap: true,
+              softWrap: true,
                           ),
-                      ]),
-          ]),
           trailing: IconButton(
             icon: Icon(
               Icons.shopping_cart,

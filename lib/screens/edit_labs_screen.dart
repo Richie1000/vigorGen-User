@@ -1,133 +1,58 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../widgets/app_drawer.dart';
 import '../widgets/image_picker.dart';
 import '../providers/labtest.dart';
-import '../providers/labs.dart';
-import '../widgets/app_drawer.dart';
 
-class AddLabService extends StatefulWidget {
-  //const AddLabService({ Key? key }) : super(key: key);
-  static const routeName = "./addLab";
+class EditLabsScreen extends StatefulWidget {
+  String labId;
+  String name;
+  var price;
+  String description;
+  String url;
+  static const routeName = './EditLab';
+
+  EditLabsScreen({
+    this.labId = "",
+    this.name = "",
+    this.price = 0,
+    this.description = "",
+    this.url = ""
+  });
 
   @override
-  State<AddLabService> createState() => _AddLabServiceState();
+  State<EditLabsScreen> createState() => _EditLabsScreenState();
 }
 
-class _AddLabServiceState extends State<AddLabService> {
+class _EditLabsScreenState extends State<EditLabsScreen> {
+  XFile _pickedImage; 
   final _form = GlobalKey<FormState>();
-  XFile _pickedImage;
-  var _editedLab = LabTest(
-    id: null,
-    title: '',
-    price: 0,
-    description: '',
-    labImage: null,
-  );
+      bool _isLoading = false;
+  var productId;
+  var productPrice;
+  var productDescription;
+  var productName;
+  var productUrl;
 
-  var _initValues = {
-    'title': '',
-    'description': '',
-    'price': '',
-    'labImage': '',
-  };
-  var _isInit = true;
-  var _isLoading = false;
+  
+  
+  var _editedLab = LabTest(
+    id: "", 
+    title: "", 
+    price: 0, 
+    description: "", 
+    labImage: "");
 
   void _selectImage(XFile image){
      _pickedImage = image;
-  }
+  }  
 
-  Future<void> _saveForm() async {
-    final isValid = _form.currentState.validate();
-    if (!isValid) {
-      return;
-    }
-    DateTime dateId = DateTime.now();
-    DateTime formattedDate = new DateTime(dateId.day, dateId.month, dateId.year, dateId.hour, dateId.minute, dateId.millisecond);
-    String newId = ("LABTEST/$formattedDate");
-    _form.currentState.save();
-    setState(() {
-      _isLoading = true;
-    });
-    if (_editedLab.id != null) {
-      // await Provider.of<LabTest>(context, listen: false)
-      //     .updateProduct(_editedProduct.id, _editedProduct);
-    } else {
-      try {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('lab_image')
-            .child(DateTime.now().toIso8601String() + '.jpg');
-
-        //manipulating ref to a future so as to await it
-       final File newFile = File(_pickedImage.path);
-        await ref.putFile(newFile);
-
-        //getting image url to work on
-        final url = await ref.getDownloadURL();
-        //_imageUrlController.text = url;
-        _editedLab.labImage =url;
-        _editedLab.id = newId;
-        print(_editedLab.description);
-        print(_editedLab.labImage);
-        print(_editedLab.price);
-        print(_editedLab.id);
-        var docRef = await FirebaseFirestore.instance.collection('labtest').add({
-          'id': _editedLab.id,
-          'Name': _editedLab.title,
-          'Price': _editedLab.price,
-          'Description': _editedLab.description,
-          'Image': _editedLab.labImage
-
-        });
-        var documentId = docRef.id;
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Lab Added succesfully"),
-                duration: Duration(milliseconds: 3000),
-              ));
-        // await Provider.of<Labs>(context, listen: false)
-        //     .addLab(_editedLab);
-        docRef.update({
-          'id': documentId,
-        });
-      } catch (error) {
-        await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('An error occurred!'),
-            content: Text('Something went wrong.'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Okay'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
-        );
-      }
-      // finally {
-      //   setState(() {
-      //     _isLoading = false;
-      //   });
-      //   Navigator.of(context).pop();
-      // }
-    }
-      setState(() {
-        _isLoading = false;
-      });
-    }
   @override
   Widget build(BuildContext context) {
+    String newPrice = "${widget.price}";
+
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
@@ -136,7 +61,7 @@ class _AddLabServiceState extends State<AddLabService> {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: _saveForm,
+            onPressed: (){},
           ),
         ],
       ),
@@ -151,7 +76,7 @@ class _AddLabServiceState extends State<AddLabService> {
                 child: ListView(
                   children: <Widget>[
                     TextFormField(
-                      //initialValue: _initValues['title'],
+                      initialValue: widget.name,
                       decoration: InputDecoration(labelText: 'Name'),
                       textInputAction: TextInputAction.next,
                       // onFieldSubmitted: (_) {
@@ -169,12 +94,12 @@ class _AddLabServiceState extends State<AddLabService> {
                             price: _editedLab.price,
                             description: _editedLab.description,
                             labImage: _editedLab.labImage,
-                            id: _editedLab.id,
+                            id: widget.labId,
                             );
                       },
                     ),
                     TextFormField(
-                      //initialValue: _initValues['price'],
+                      initialValue: newPrice ,
                       decoration: InputDecoration(labelText: 'Price'),
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
@@ -201,12 +126,12 @@ class _AddLabServiceState extends State<AddLabService> {
                             price: double.parse(value),
                             description: _editedLab.description,
                             labImage: _editedLab.labImage,
-                            id: _editedLab.id,
+                            id: widget.labId,
                             );
                       },
                     ),
                     TextFormField(
-                      //initialValue: _initValues['description'],
+                      initialValue: widget.description,
                       decoration: InputDecoration(labelText: 'Description'),
                       maxLines: 3,
                       keyboardType: TextInputType.multiline,
@@ -226,7 +151,7 @@ class _AddLabServiceState extends State<AddLabService> {
                           price: _editedLab.price,
                           description: value,
                           labImage: _editedLab.labImage,
-                          id: _editedLab.id,
+                          id: widget.labId,
                         
                         );
                       },
@@ -282,4 +207,4 @@ class _AddLabServiceState extends State<AddLabService> {
               ),
     ));
   }
-  }
+}
