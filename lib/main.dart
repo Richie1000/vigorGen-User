@@ -22,15 +22,16 @@ import './providers/labtest.dart';
 import 'screens/add_lab_service.dart';
 import 'screens/manage_labs_screen.dart';
 import 'screens/edit_labs_screen.dart';
+import 'providers/lab_cart.dart';
+import 'screens/lab_cart_screen.dart';
 
-void main() async{
-WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(MyApp());
-} 
-
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -40,55 +41,60 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
-        ChangeNotifierProvider.value(
-          value: LabTest()),
+        ChangeNotifierProvider.value(value: LabTest()),
         ChangeNotifierProxyProvider<Auth, Products>(
           update: (ctx, auth, previousProducts) => Products(
-                auth.token,
-                auth.userId,
-                previousProducts == null ? [] : previousProducts.items,
-              ),
+            auth.token,
+            auth.userId,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
         ),
+        ChangeNotifierProvider.value(value: LabCart()),
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
         ChangeNotifierProxyProvider<Auth, Orders>(
           update: (ctx, auth, previousOrders) => Orders(
-                auth.token,
-                auth.userId,
-                previousOrders == null ? [] : previousOrders.orders,
-              ),
+            auth.token,
+            auth.userId,
+            previousOrders == null ? [] : previousOrders.orders,
+          ),
         ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
-              title: 'MyShop',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                primarySwatch: Colors.purple,
-                accentColor: Colors.deepOrange,
-                fontFamily: 'Lato',
-                pageTransitionsTheme: PageTransitionsTheme(builders: {
-                  TargetPlatform.android: CustomPageTransitionBuilder(),
-                  TargetPlatform.iOS : CustomPageTransitionBuilder()
-                })
-              ),
-              home: auth.isAuth ? ProductsOverviewScreen() :FutureBuilder(
-                future: auth.tryAutoLogin(),
-                builder: (context, authResultSnapshot) =>
-                authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : AuthScreen()),
-              routes: {
-                ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-                CartScreen.routeName: (ctx) => CartScreen(),
-                OrdersScreen.routeName: (ctx) => OrdersScreen(),
-                UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-                EditProductScreen.routeName: (ctx) => EditProductScreen(),
-                LabScreen.routeName: (ctx)=> LabScreen(),
-                AddLabService.routeName: (ctx)=>AddLabService(),
-                ManageLabs.routeName: (ctx) =>ManageLabs(),
-                EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
-              },
-            ),
+          title: 'Vigor Gen',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              primarySwatch: Colors.purple,
+              accentColor: Colors.deepOrange,
+              fontFamily: 'Lato',
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionBuilder()
+              })),
+          home: auth.isAuth
+              ? ProductsOverviewScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? LoadingScreen()
+                          : AuthScreen()),
+          routes: {
+            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            CartScreen.routeName: (ctx) => CartScreen(),
+            OrdersScreen.routeName: (ctx) => OrdersScreen(),
+            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+            EditProductScreen.routeName: (ctx) => EditProductScreen(),
+            LabScreen.routeName: (ctx) => LabScreen(),
+            AddLabService.routeName: (ctx) => AddLabService(),
+            ManageLabs.routeName: (ctx) => ManageLabs(),
+            EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
+            LabCartScreen.routeName: (ctx)=> LabCartScreen()
+          },
+        ),
       ),
     );
   }

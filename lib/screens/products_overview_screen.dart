@@ -50,7 +50,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     super.didChangeDependencies();
   }
   Future<void>_refreshHanndler ()async{
-    return await Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+    return await Provider.of<Products>(context, listen: true).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
