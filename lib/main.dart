@@ -24,6 +24,7 @@ import 'screens/manage_labs_screen.dart';
 import 'screens/edit_labs_screen.dart';
 import 'providers/lab_cart.dart';
 import 'screens/lab_cart_screen.dart';
+import 'screens/lab_request_details_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,7 +93,8 @@ class MyApp extends StatelessWidget {
             AddLabService.routeName: (ctx) => AddLabService(),
             ManageLabs.routeName: (ctx) => ManageLabs(),
             EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
-            LabCartScreen.routeName: (ctx)=> LabCartScreen()
+            LabCartScreen.routeName: (ctx)=> LabCartScreen(),
+            LabRequestDetailsScreen.routeName: (ctx)=> LabRequestDetailsScreen()
           },
         ),
       ),

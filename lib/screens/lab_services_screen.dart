@@ -11,6 +11,7 @@ import '../widgets/lab_Item.dart';
 import '../widgets/app_drawer.dart';
 import '../screens/lab_cart_screen.dart';
 import '../providers/lab_cart.dart';
+import './lab_request_details_screen.dart';
 
 
 class LabScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class LabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
+    
     return Scaffold(
         appBar: AppBar(
             actions: [
@@ -26,7 +28,7 @@ class LabScreen extends StatelessWidget {
                   Icons.shopping_cart,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(LabCartScreen.routeName);
+                  Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
                 },
               ),
             ],
