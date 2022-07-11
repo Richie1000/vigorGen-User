@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/products.dart';
 import '../providers/cart.dart';
@@ -10,6 +13,12 @@ class ProductDetailScreen extends StatelessWidget {
 
   // ProductDetailScreen(this.title, this.price);
   static const routeName = '/product-detail';
+
+  String getCurrency() {
+  var format = NumberFormat.currency(locale: Platform.localeName, name: 'GHS');
+  print(format.currencySymbol);
+  return format.currencySymbol;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,7 @@ class ProductDetailScreen extends StatelessWidget {
               [
                 SizedBox(height: 10),
                 Text(
-                  '\$${loadedProduct.price}',
+                  getCurrency() + ' ${loadedProduct.price}',
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 20,

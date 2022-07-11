@@ -42,6 +42,7 @@ class Products with ChangeNotifier {
     // ),
   ];
   // var _showFavoritesOnly = false;
+  List <Product> _searchProducts = [];
   final String authToken;
   final String userId;
 
@@ -61,6 +62,8 @@ class Products with ChangeNotifier {
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
+
+  
 
   // void showFavoritesOnly() {
   //   _showFavoritesOnly = true;
@@ -99,6 +102,7 @@ class Products with ChangeNotifier {
         ));
       });
       _items = loadedProducts;
+      _searchProducts = loadedProducts;
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -170,4 +174,10 @@ class Products with ChangeNotifier {
     }
     existingProduct = null;
   }
+
+  List<Product> searchingElements(){
+    fetchAndSetProducts();
+    return _searchProducts;
+  }
+  
 }

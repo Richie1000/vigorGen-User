@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/lab_cart.dart';
 
@@ -21,7 +24,13 @@ class LabItem extends StatefulWidget {
 class _LabItemState extends State<LabItem> {
   bool isExpanded = true;
   bool isExpanded2 = true;
+  var currSymbol = "";
 
+  String getCurrency() {
+  var format = NumberFormat.currency(locale: Platform.localeName, name: 'GHS');
+  print(format);
+  return format.currencySymbol;
+}
   @override
   Widget build(BuildContext context) {
     String title = widget.title;
@@ -99,8 +108,13 @@ class _LabItemState extends State<LabItem> {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        Text(getCurrency()+'${widget.price }',
+                          style: TextStyle(
+                            fontFamily: 'Roboto'
+                          ),
+                        ),
                         IconButton(
                             icon: Icon(Icons.shopping_cart),
                             onPressed: () {

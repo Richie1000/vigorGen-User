@@ -9,6 +9,7 @@ import '../widgets/badge.dart';
 import '../providers/cart.dart';
 import './cart_screen.dart';
 import '../providers/products.dart';
+import '../widgets/search_button.dart';
 
 enum FilterOptions {
   Favorites,
@@ -60,34 +61,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Vigor Gen'),
-        actions: <Widget>[
-          PopupMenuButton(
-            onSelected: (FilterOptions selectedValue) {
-              setState(() {
-                if (selectedValue == FilterOptions.Favorites) {
-                  _showOnlyFavorites = true;
-                } else {
-                  _showOnlyFavorites = false;
-                }
-              });
-            },
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            itemBuilder: (_) => [
-                  PopupMenuItem(
-                    child: Text('Only Favorites'),
-                    value: FilterOptions.Favorites,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Show All'),
-                    value: FilterOptions.All,
-                  ),
-                ],
-          ),
-          Consumer<Cart>(
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        child: Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
                   child: ch,
                   value: cart.itemCount.toString(),
@@ -101,6 +78,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               },
             ),
           ),
+      ),
+      appBar: AppBar(
+        title: Text('Vigor Gen'),
+        actions: [
+          SearchButton()
         ],
       ),
       drawer: AppDrawer(),
