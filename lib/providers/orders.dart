@@ -146,6 +146,7 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
+<<<<<<< Updated upstream
   Future <void> addOrderCompletion( String id)async{
     try {
    
@@ -153,6 +154,16 @@ class Orders with ChangeNotifier {
     await http.patch(url, body: 
       json.encode(
        { 'completed': true}
+=======
+  Future <void> addOrderCopletion(bool isComplete, DateTime dateId)async{
+    dateId.toIso8601String();
+    try {
+    final prodIndex = _orders.firstWhere((ord) => ord.dateTime.toIso8601String() == dateId);
+    final Uri url = Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
+    await http.patch(url, body: 
+      json.encode(
+       { 'completed': isComplete}
+>>>>>>> Stashed changes
       )
      );
   } catch (error) {
