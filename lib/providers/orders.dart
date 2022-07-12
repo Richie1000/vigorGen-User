@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import './cart.dart';
 import './lab_cart.dart';
@@ -11,12 +12,14 @@ class OrderItem {
   final double amount;
   final List<CartItem> products;
   final DateTime dateTime;
+  final bool completed;
 
   OrderItem({
     @required this.id,
     @required this.amount,
     @required this.products,
     @required this.dateTime,
+    @required this.completed
   });
 }
 
@@ -55,6 +58,7 @@ class Orders with ChangeNotifier {
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    
     if (extractedData == null) {
       return;
     }
@@ -64,6 +68,7 @@ class Orders with ChangeNotifier {
           id: orderId,
           amount: orderData['amount'],
           dateTime: DateTime.parse(orderData['dateTime']),
+          completed: orderData['completed'],
           products: (orderData['products'] as List<dynamic>)
               .map(
                 (item) => CartItem(
@@ -97,6 +102,7 @@ class Orders with ChangeNotifier {
                   'price': cp.price,
                 })
             .toList(),
+        'completed': false
       }),
     );
     _orders.insert(
@@ -138,5 +144,30 @@ class Orders with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+<<<<<<< Updated upstream
+  Future <void> addOrderCompletion( String id)async{
+    try {
+   
+    final Uri url = Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/orders/$userId/$id.json?auth=$authToken');
+    await http.patch(url, body: 
+      json.encode(
+       { 'completed': true}
+=======
+  Future <void> addOrderCopletion(bool isComplete, DateTime dateId)async{
+    dateId.toIso8601String();
+    try {
+    final prodIndex = _orders.firstWhere((ord) => ord.dateTime.toIso8601String() == dateId);
+    final Uri url = Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
+    await http.patch(url, body: 
+      json.encode(
+       { 'completed': isComplete}
+>>>>>>> Stashed changes
+      )
+     );
+  } catch (error) {
+    print(error);
+  }
   }
 }
