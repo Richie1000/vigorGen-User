@@ -58,18 +58,20 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
-      _autoLogout();
+      // _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode({'token': _token, 'userId': _userId, 'expiryDate': _expiryDate.toIso8601String()});
       prefs.setString('userData', userData);
     } catch (error) {
+      print(error);
       throw error;
+      
     }
   }
 
   Future<void> signup(String email, String password) async {
-    return _authenticate(email, password, 'signupNewUser');
+    return _authenticate(email, password, 'signUp');
   }
 
   Future<void> login(String email, String password) async {

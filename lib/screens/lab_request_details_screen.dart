@@ -89,11 +89,11 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
                       keyboardType: TextInputType.number,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    width: size.width / 1.5,
-                    //height: size.height/6.5,
-                    child: Row (
+                  
+                    // padding: EdgeInsets.all(10),
+                    // width: size.width / 1.5,
+                    // //height: size.height/6.5,
+                    Row (
                       children: [
                         Text("Place of Sample Taking"),
                 
@@ -107,8 +107,8 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
                           });
                         }),
                       ]
-                    )
-                  ),
+                    ),
+                
                   Container(
                     padding: EdgeInsets.all(10),
                     width: size.width / 1.5,

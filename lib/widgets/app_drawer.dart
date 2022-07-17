@@ -22,7 +22,7 @@ class AppDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.shop),
-            title: Text('Shop'),
+            title: Text('Drug '),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },

@@ -12,6 +12,9 @@ class OrderItem {
   final double amount;
   final List<CartItem> products;
   final DateTime dateTime;
+  final String customerNumber;
+  final String address;
+  final String paymentPlatform;
   final bool completed;
 
   OrderItem({
@@ -19,6 +22,9 @@ class OrderItem {
     @required this.amount,
     @required this.products,
     @required this.dateTime,
+    @required this.customerNumber,
+    @required this.address,
+    @required this.paymentPlatform,
     @required this.completed
   });
 }
@@ -86,7 +92,7 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+  Future<void> addOrder(List<CartItem> cartProducts, double total, String contact, String address, String payment) async {
     final Uri url = Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final timestamp = DateTime.now();
     final response = await http.post(
@@ -102,6 +108,9 @@ class Orders with ChangeNotifier {
                   'price': cp.price,
                 })
             .toList(),
+        'contactnumber': contact,
+        'address': address,
+        'paymentMethod': payment, 
         'completed': false
       }),
     );
@@ -146,7 +155,6 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
-<<<<<<< Updated upstream
   Future <void> addOrderCompletion( String id)async{
     try {
    
@@ -154,16 +162,6 @@ class Orders with ChangeNotifier {
     await http.patch(url, body: 
       json.encode(
        { 'completed': true}
-=======
-  Future <void> addOrderCopletion(bool isComplete, DateTime dateId)async{
-    dateId.toIso8601String();
-    try {
-    final prodIndex = _orders.firstWhere((ord) => ord.dateTime.toIso8601String() == dateId);
-    final Uri url = Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
-    await http.patch(url, body: 
-      json.encode(
-       { 'completed': isComplete}
->>>>>>> Stashed changes
       )
      );
   } catch (error) {

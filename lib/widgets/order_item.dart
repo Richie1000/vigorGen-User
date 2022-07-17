@@ -29,7 +29,6 @@ class _OrderItemState extends State<OrderItem> {
   }
 
   Future<void> _completeOrder() async {
-<<<<<<< Updated upstream
     
     var _orderToComplete = Provider.of<ord.Orders>(context, listen: false);
     _isDelivered = true;
@@ -40,20 +39,11 @@ class _OrderItemState extends State<OrderItem> {
         content: (Text("User Will be notified")),
       )
     );
-=======
-    var _orderToComplete = Provider.of<ord.Orders>(context, listen: false);
-    _isDelivered = true;
-    try {
-    await _orderToComplete.addOrderCopletion(_isDelivered, widget.order.dateTime);
->>>>>>> Stashed changes
     //_expanded = true;
     }catch(error){
       print(error);
     }
-<<<<<<< Updated upstream
     Navigator.pop(context);
-=======
->>>>>>> Stashed changes
   }
 
   void _switchChanger(bool status) {
@@ -130,7 +120,6 @@ class _OrderItemState extends State<OrderItem> {
                 );
               },
               child: ListTile(
-<<<<<<< Updated upstream
                 title: Row(
                   children: [
                     Text(getCurrency() + ' ${widget.order.amount}'),
@@ -146,12 +135,6 @@ class _OrderItemState extends State<OrderItem> {
                     Text(
                       DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
                     ),
-=======
-                title: Text(getCurrency() + ' ${widget.order.amount}'),
-                subtitle: Text(
-                  DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
-                ),
->>>>>>> Stashed changes
                 trailing: IconButton(
                   icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
                   onPressed: () {

@@ -12,6 +12,8 @@ import '../widgets/app_drawer.dart';
 import '../screens/lab_cart_screen.dart';
 import '../providers/lab_cart.dart';
 import './lab_request_details_screen.dart';
+import 'form_screen.dart';
+import './lab_cart_screen.dart';
 
 
 class LabScreen extends StatelessWidget {
@@ -28,7 +30,9 @@ class LabScreen extends StatelessWidget {
                   Icons.shopping_cart,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
+                  Navigator.of(context).pushNamed(LabCartScreen.routeName);
+                  // Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FormScreen()));
                 },
               ),
             ],

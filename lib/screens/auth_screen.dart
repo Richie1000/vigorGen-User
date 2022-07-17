@@ -170,8 +170,9 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         );
       }
     } on HttpException catch (error) {
-     
+      print(error);
     } catch (error) {
+      print(error);
        var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';

@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
 import '../providers/orders.dart';
+import './checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
-  
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
@@ -35,29 +37,35 @@ class CartScreen extends StatelessWidget {
                     label: Text(
                       '\$${cart.totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
-                        color: Theme.of(context).primaryTextTheme.headline6.color,
+                        color:
+                            Theme.of(context).primaryTextTheme.headline6.color,
                       ),
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  OrderButton(cart: cart)
+                  
                 ],
               ),
             ),
           ),
           SizedBox(height: 10),
           Expanded(
-            child: ListView.builder(
+            child: ListView.builder(    
               itemCount: cart.items.length,
               itemBuilder: (ctx, i) => CartItem(
-                    cart.items.values.toList()[i].id,
-                    cart.items.keys.toList()[i],
-                    cart.items.values.toList()[i].price,
-                    cart.items.values.toList()[i].quantity,
-                    cart.items.values.toList()[i].title,
-                  ),
+                cart.items.values.toList()[i].id,
+                cart.items.keys.toList()[i],
+                cart.items.values.toList()[i].price,
+                cart.items.values.toList()[i].quantity,
+                cart.items.values.toList()[i].title,
+              ),
             ),
-          )
+          ),
+          ElevatedButton(
+                    onPressed: (){
+                      Navigator.pushReplacementNamed(context, CheckOutScreen.routeName);
+                    }, 
+                    child: Text("Proceed", style: TextStyle(fontSize: 20),))
         ],
       ),
     );
@@ -86,19 +94,58 @@ class _OrderButtonState extends State<OrderButton> {
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
           ? null
           : () async {
+            
               setState(() {
                 _isLoading = true;
               });
-              await Provider.of<Orders>(context, listen: false).addOrder(
-                widget.cart.items.values.toList(),
-                widget.cart.totalAmount,
-              );
+              // await Provider.of<Orders>(context, listen: false).addOrder(
+              //   widget.cart.items.values.toList(),
+              //   widget.cart.totalAmount,
+              // );
               setState(() {
                 _isLoading = false;
               });
               widget.cart.clear();
+              showBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  color: Colors.white70,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(
+                      Icons.check_circle,
+                      size: 70,
+                      color: Colors.green,
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Center(
+                            child: Text(
+                              "Thanks For shopping with us! \nYou will be notified when we are about to Deliver",
+                              softWrap: true,
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("OK"))
+                      ],
+                    ),
+                  ]),
+                ),
+              );
             },
       textColor: Theme.of(context).primaryColor,
     );
   }
 }
+
+

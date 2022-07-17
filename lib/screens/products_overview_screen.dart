@@ -60,6 +60,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int itemCount = 0;
     return Scaffold(
 
       floatingActionButton: FloatingActionButton(
