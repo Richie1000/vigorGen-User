@@ -9,6 +9,7 @@ import '../models/http_exception.dart';
 import '../widgets/splash_screen.dart';
 
 enum AuthMode { Signup, Login }
+bool forgotPassword = false;
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -156,18 +157,24 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.Login) {
+      if (_authMode == AuthMode.Login && forgotPassword ==false) {
         // Log user in
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
         );
-      } else {
-        // Sign user up
+      } else if(_authMode == AuthMode.Signup && forgotPassword ==false){
+         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
           _authData['email'],
           _authData['password'],
         );
+
+       
+      }
+      else {
+         await Provider.of<Auth>(context, listen: false).resetPassword(_authData['email']);
+        print("try");
       }
     } on HttpException catch (error) {
       print(error);
@@ -197,15 +204,82 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     if (_authMode == AuthMode.Login) {
       setState(() {
         _authMode = AuthMode.Signup;
+        forgotPassword = false;
       });
       _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.Login;
+        forgotPassword = false;
       });
       _controller.reverse();
     }
   }
+
+  void _switchForgetPasswordMode(){
+    if (forgotPassword == false)
+    {setState(() {
+      forgotPassword = true;
+    });}
+  }
+
+  bool _enablefields (){
+    if ((_authMode == AuthMode.Login||_authMode == AuthMode.Signup) && forgotPassword == true ){
+      return false;
+    }
+    else if ((_authMode == AuthMode.Login||_authMode == AuthMode.Signup) && forgotPassword == false ){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  String _buttonText(){
+    if((_authMode == AuthMode.Login) && forgotPassword == true){
+      print(forgotPassword);
+      return "Reset Password";
+    }
+    if((_authMode == AuthMode.Signup) && forgotPassword == true){
+      print(forgotPassword);
+      return "Reset Password";
+    }
+    if((_authMode == AuthMode.Login) && forgotPassword == false){
+      print(forgotPassword);
+      return "Login";
+    }
+    if((_authMode == AuthMode.Signup) && forgotPassword == false){
+      print(forgotPassword);
+      return "SignUp";
+    }
+  }
+  Future<void> _tryPasswordReset()async{
+    _formKey.currentState.save();
+    setState(() {
+      _isLoading = true;
+      //print("starting again");
+    });
+    try {
+      //print("midway");
+     await Provider.of<Auth>(context, listen: false).resetPassword(_authData["email"]);
+     Scaffold.of(context).showSnackBar(SnackBar(content: Text("Password reset Successful, Check Your Email")));
+     forgotPassword = false;
+       _authMode = AuthMode.Signup;
+       _switchAuthMode();
+     setState(() {
+       
+     });
+     //print("done");
+    }
+    catch(error){
+      print(error);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+    
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,10 +292,10 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 350 : 300,
         //height:_heightAnimation.value.height,
         constraints:
-            BoxConstraints(minHeight:_authMode == AuthMode.Signup ? 320 : 260),
+            BoxConstraints(minHeight:_authMode == AuthMode.Signup ? 350 : 300),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -242,6 +316,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                   },
                 ),
                 TextFormField(
+                  enabled: _enablefields(),
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
@@ -266,7 +341,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                       child: SlideTransition(
                         position: _slideAnimation,
                         child: TextFormField(
-                          enabled: _authMode == AuthMode.Signup,
+                          enabled: _enablefields(),
                           decoration: InputDecoration(labelText: 'Confirm Password'),
                           obscureText: true,
                           validator: _authMode == AuthMode.Signup
@@ -283,13 +358,30 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                 SizedBox(
                   height: 20,
                 ),
+                TextButton(
+                  onPressed: _switchForgetPasswordMode, 
+                  child: Text("Forgot Password")),
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
+                  if(forgotPassword== false)
                   RaisedButton(
                     child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                        Text(_authMode == AuthMode.Login? "Login": "Sign Up"),
                     onPressed: _submit,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  ),
+                  if(forgotPassword== true)
+                  RaisedButton(
+                    child:
+                        Text("Reset Password"),
+                    onPressed: _tryPasswordReset,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
