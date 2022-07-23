@@ -13,7 +13,8 @@ bool forgotPassword = false;
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
-
+  
+  
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -27,8 +28,9 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
+                  //Color
+                  Color.fromRGBO(221, 214, 243, 1).withOpacity(0.5),
+                  Color.fromRGBO(250, 172, 168, 1).withOpacity(0.7),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -109,6 +111,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _opacityAnimation;
+  final DateTime startTimer = DateTime(2022, 7,19,15,27,00);
+  final DateTime endTimer = DateTime(2022, 7, 23, 00, 35,00 );
 
   @override
   void initState() {
@@ -148,10 +152,16 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   }
 
   Future<void> _submit() async {
+
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
     }
+    // if (endTimer.isBefore(DateTime.now())){
+    //   _showErrorDialog("Sorry Mate! Time for Testing is Over");
+    //   HapticFeedback.mediumImpact();
+    //   return;
+    // }
     _formKey.currentState.save();
     setState(() {
       _isLoading = true;
@@ -178,6 +188,21 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       }
     } on HttpException catch (error) {
       print(error);
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use.';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak.';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email.';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password.';
+      }
+      _showErrorDialog(errorMessage);
+      HapticFeedback.lightImpact();
+      
     } catch (error) {
       print(error);
        var errorMessage = 'Authentication failed';
@@ -193,6 +218,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         errorMessage = 'Invalid password.';
       }
       _showErrorDialog(errorMessage);
+      HapticFeedback.lightImpact();
     }
 
     setState(() {

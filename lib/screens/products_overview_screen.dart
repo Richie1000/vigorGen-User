@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -81,10 +82,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
       ),
       appBar: AppBar(
-        title: Text('Vigor Gen'),
+        title: Text('Vigor Gen', style: TextStyle(fontWeight: FontWeight.bold),),
         actions: [
           SearchButton()
         ],
+        shadowColor: Colors.white,
+        elevation: 0,
+        bottomOpacity: 0,systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       drawer: AppDrawer(),
       body: LiquidPullToRefresh(

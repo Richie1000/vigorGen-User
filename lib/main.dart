@@ -26,6 +26,23 @@ import 'providers/lab_cart.dart';
 import 'screens/lab_cart_screen.dart';
 import 'screens/lab_request_details_screen.dart';
 import './screens/checkout_screen.dart';
+import './screens/chatbot_screen.dart';
+
+const MaterialColor kPrimaryColor = const MaterialColor(
+  0xFFEF9A9A,
+  const <int, Color>{
+    50: const Color(0xFFEF9A9A),
+    100: const Color(0xFFEF9A9A),
+    200: const Color(0xFFEF9A9A),
+    300: const Color(0xFFEF9A9A),
+    400: const Color(0xFFEF9A9A),
+    500: const Color(0xFFEF9A9A),
+    600: const Color(0xFFEF9A9A),
+    700: const Color(0xFFEF9A9A),
+    800: const Color(0xFFEF9A9A),
+    900: const Color(0xFFEF9A9A),
+  },
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +85,7 @@ class MyApp extends StatelessWidget {
           title: 'Vigor Gen',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-              primarySwatch: Colors.purple,
+              primarySwatch: kPrimaryColor,
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato',
               pageTransitionsTheme: PageTransitionsTheme(builders: {
@@ -96,7 +113,8 @@ class MyApp extends StatelessWidget {
             EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
             LabCartScreen.routeName: (ctx)=> LabCartScreen(),
             LabRequestDetailsScreen.routeName: (ctx)=> LabRequestDetailsScreen(),
-            CheckOutScreen.routeName: (ctx) => CheckOutScreen()
+            CheckOutScreen.routeName: (ctx) => CheckOutScreen(),
+            ChatBotScreen.routeName: (ctx)=> ChatBotScreen()
           },
         ),
       ),

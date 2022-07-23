@@ -87,38 +87,38 @@ class _OrderItemState extends State<OrderItem> {
         child: Column(
           children: <Widget>[
             GestureDetector(
-              onLongPress: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Has Item/Service been Delivered?",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                                child: Text("Yes", style: TextStyle(fontSize: 15),), 
-                                onPressed: _completeOrder),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("No", style: TextStyle(fontSize: 15),))
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+              // onLongPress: () {
+              //   showModalBottomSheet(
+              //     context: context,
+              //     builder: (context) => Container(
+              //       child: Column(
+              //         mainAxisSize: MainAxisSize.min,
+              //         children: [
+              //           Row(
+              //             children: [
+              //               Text(
+              //                 "Has Item/Service been Delivered?",
+              //                 style: TextStyle(fontSize: 20),
+              //               ),
+              //             ],
+              //           ),
+              //           Row(
+              //             children: [
+              //               TextButton(
+              //                   child: Text("Yes", style: TextStyle(fontSize: 15),), 
+              //                   onPressed: _completeOrder),
+              //               TextButton(
+              //                   onPressed: () {
+              //                     Navigator.pop(context);
+              //                   },
+              //                   child: Text("No", style: TextStyle(fontSize: 15),))
+              //             ],
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   );
+              // },
               child: ListTile(
                 title: Row(
                   children: [
@@ -126,9 +126,9 @@ class _OrderItemState extends State<OrderItem> {
                     SizedBox(
                       width: 70
                     ),
-                    if(widget.order.completed != null && widget.order.completed == true) Icon(Icons.check_circle,color: Colors.green),
-                    if (widget.order.completed != null && widget.order.completed == false) 
-                    Icon(Icons.warning, color: Colors.red)
+                    // if(widget.order.completed != null && widget.order.completed == true) Icon(Icons.check_circle,color: Colors.green),
+                    // if (widget.order.completed != null && widget.order.completed == false) 
+                    // Icon(Icons.warning, color: Colors.red)
                   ]
                 ),
                 subtitle: 

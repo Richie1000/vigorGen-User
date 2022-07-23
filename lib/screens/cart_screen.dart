@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,13 @@ import './checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
+
+  String getCurrency() {
+    var format =
+        NumberFormat.currency(locale: Platform.localeName, name: 'GHS');
+    print(format);
+    return format.currencySymbol;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,7 @@ class CartScreen extends StatelessWidget {
                   Spacer(),
                   Chip(
                     label: Text(
-                      '\$${cart.totalAmount.toStringAsFixed(2)}',
+                      getCurrency() + ' ${cart.totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
                         color:
                             Theme.of(context).primaryTextTheme.headline6.color,
@@ -61,6 +69,7 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
+          if(cart.itemCount != 0)
           ElevatedButton(
                     onPressed: (){
                       Navigator.pushReplacementNamed(context, CheckOutScreen.routeName);
@@ -136,7 +145,7 @@ class _OrderButtonState extends State<OrderButton> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text("OK"))
+                            child: const Text("OK"))
                       ],
                     ),
                   ]),
