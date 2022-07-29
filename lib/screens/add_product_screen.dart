@@ -276,43 +276,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Container(child: UserImagePicker(_selectImage ) )
                         ]),
 
-                    // Expanded(
-                    //   child: TextFormField(
-                    //     decoration: InputDecoration(labelText: 'Image URL'),
-                    //     keyboardType: TextInputType.url,
-                    //     textInputAction: TextInputAction.done,
-                    //     controller: _imageUrlController,
-                    //     focusNode: _imageUrlFocusNode,
-                    //     onFieldSubmitted: (_) {
-                    //       _saveForm();
-                    //     },
-                    //     validator: (value) {
-                    //       if (value.isEmpty) {
-                    //         return 'Please enter an image URL.';
-                    //       }
-                    //       if (!value.startsWith('http') &&
-                    //           !value.startsWith('https')) {
-                    //         return 'Please enter a valid URL.';
-                    //       }
-                    //       if (!value.endsWith('.png') &&
-                    //           !value.endsWith('.jpg') &&
-                    //           !value.endsWith('.jpeg')) {
-                    //         return 'Please enter a valid image URL.';
-                    //       }
-                    //       return null;
-                    //     },
-                    //     onSaved: (value) {
-                    //       _editedProduct = Product(
-                    //         title: _editedProduct.title,
-                    //         price: _editedProduct.price,
-                    //         description: _editedProduct.description,
-                    //         imageUrl: value,
-                    //         id: _editedProduct.id,
-                    //         isFavorite: _editedProduct.isFavorite,
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
+                    
                   ],
                 ),
               ),

@@ -11,6 +11,8 @@ import '../providers/cart.dart';
 import './cart_screen.dart';
 import '../providers/products.dart';
 import '../widgets/search_button.dart';
+import '../widgets/product_shimmer_grid.dart';
+import '../widgets/categories_list.dart';
 
 enum FilterOptions {
   Favorites,
@@ -61,9 +63,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 0;
     return Scaffold(
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorLight,
         child: Consumer<Cart>(
@@ -96,13 +96,21 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         animSpeedFactor: 1.5,
         onRefresh: _refreshHanndler,
               child: _isLoading
-            ? Center(
-                child: SpinKitDualRing(
-                  color: Theme.of(context).primaryColor,
-                ),
-              )
-            : ProductsGrid(_showOnlyFavorites),
+            ? ShimmerGid()
+            : ListView(
+                          children: [Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [  
+                  
+                  CategoryList(),
+                  Expanded(flex: 2,
+                    child: ProductsGrid(_showOnlyFavorites),
+              ),
+                ] 
+              //ProductsGrid(_showOnlyFavorites),
       ),
-    );
+    ),
+           ] )));
   }
 }

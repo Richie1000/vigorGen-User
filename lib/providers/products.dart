@@ -43,6 +43,7 @@ class Products with ChangeNotifier {
   ];
   // var _showFavoritesOnly = false;
   List <Product> _searchProducts = [];
+  List <String> imageSource = [];
   final String authToken;
   final String userId;
 
@@ -179,5 +180,20 @@ class Products with ChangeNotifier {
     fetchAndSetProducts();
     return _searchProducts;
   }
+  Future<void> _getimages(String id)async{
+   final url =
+          Uri.parse('https://shop-app-d00fc-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
+    final responseData = await http.get(url);
+    final extractedData = json.decode(responseData.body);
+    //print(extractedData['imageUrl']);
+    imageSource= [extractedData['imageuUrl'], extractedData['image2'], extractedData['image3']];
+    //return imageSource;
+  }
+
+  List<String> images(String id){
+    _getimages(id);
+    return imageSource;
+  }
+
   
 }
