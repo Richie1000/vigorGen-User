@@ -27,10 +27,12 @@ class _LabItemState extends State<LabItem> {
   var currSymbol = "";
 
   String getCurrency() {
-  var format = NumberFormat.currency(locale: Platform.localeName, name: 'GHS');
-  print(format);
-  return format.currencySymbol;
-}
+    var format =
+        NumberFormat.currency(locale: Platform.localeName, name: 'GHS');
+    print(format);
+    return format.currencySymbol;
+  }
+
   @override
   Widget build(BuildContext context) {
     String title = widget.title;
@@ -110,10 +112,9 @@ class _LabItemState extends State<LabItem> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(getCurrency()+'${widget.price }',
-                          style: TextStyle(
-                            fontFamily: 'Roboto'
-                          ),
+                        Text(
+                          getCurrency() + '${widget.price}',
+                          style: TextStyle(fontFamily: 'Roboto'),
                         ),
                         IconButton(
                             icon: Icon(Icons.shopping_cart),
@@ -121,8 +122,10 @@ class _LabItemState extends State<LabItem> {
                               Provider.of<LabCart>(context, listen: false)
                                   .addLabItem(
                                       widget.id, widget.price, widget.title);
-                              Scaffold.of(context).hideCurrentSnackBar();
-                              Scaffold.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
                                 content: Text(
                                   'Added item to cart!',
                                 ),

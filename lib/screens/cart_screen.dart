@@ -51,14 +51,13 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  
                 ],
               ),
             ),
           ),
           SizedBox(height: 10),
           Expanded(
-            child: ListView.builder(    
+            child: ListView.builder(
               itemCount: cart.items.length,
               itemBuilder: (ctx, i) => CartItem(
                 cart.items.values.toList()[i].id,
@@ -69,12 +68,16 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-          if(cart.itemCount != 0)
-          ElevatedButton(
-                    onPressed: (){
-                      Navigator.pushReplacementNamed(context, CheckOutScreen.routeName);
-                    }, 
-                    child: Text("Proceed", style: TextStyle(fontSize: 20),))
+          if (cart.itemCount != 0)
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, CheckOutScreen.routeName);
+                },
+                child: Text(
+                  "Proceed",
+                  style: TextStyle(fontSize: 20),
+                ))
         ],
       ),
     );
@@ -98,12 +101,11 @@ class _OrderButtonState extends State<OrderButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
           ? null
           : () async {
-            
               setState(() {
                 _isLoading = true;
               });
@@ -152,9 +154,7 @@ class _OrderButtonState extends State<OrderButton> {
                 ),
               );
             },
-      textColor: Theme.of(context).primaryColor,
+      //textColor: Theme.of(context).primaryColor,
     );
   }
 }
-
-

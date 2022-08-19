@@ -5,10 +5,9 @@ import '../providers/lab_cart.dart';
 import '../widgets/cart_item.dart';
 import '../providers/orders.dart';
 
-
 class LabCartScreen extends StatelessWidget {
   static const routeName = '/labcart';
-  
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<LabCart>(context);
@@ -34,7 +33,8 @@ class LabCartScreen extends StatelessWidget {
                     label: Text(
                       '\$${cart.totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
-                        color: Theme.of(context).primaryTextTheme.headline6.color,
+                        color:
+                            Theme.of(context).primaryTextTheme.headline6.color,
                       ),
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
@@ -49,12 +49,12 @@ class LabCartScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: cart.items.length,
               itemBuilder: (ctx, i) => CartItem(
-                    cart.items.values.toList()[i].id,
-                    cart.items.keys.toList()[i],
-                    cart.items.values.toList()[i].price,
-                    1,
-                    cart.items.values.toList()[i].title,
-                  ),
+                cart.items.values.toList()[i].id,
+                cart.items.keys.toList()[i],
+                cart.items.values.toList()[i].price,
+                1,
+                cart.items.values.toList()[i].title,
+              ),
             ),
           )
         ],
@@ -80,7 +80,7 @@ class _OrderButtonState extends State<OrderButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
           ? null
@@ -97,11 +97,7 @@ class _OrderButtonState extends State<OrderButton> {
               });
               widget.cart.clear();
             },
-      textColor: Theme.of(context).primaryColor,
+      //textColor: Theme.of(context).primaryColor,
     );
   }
 }
-
-
-
-

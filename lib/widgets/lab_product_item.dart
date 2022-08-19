@@ -15,31 +15,31 @@ class LabProductItem extends StatelessWidget {
 
   LabProductItem(this.id, this.title, this.imageUrl);
 
-   Future <void> _deleteLab(String id)async{
+  Future<void> _deleteLab(String id) async {
     var db = FirebaseFirestore.instance;
-    try{
-    await db.collection("labtest").doc(id).delete();
-    }catch (err){
+    try {
+      await db.collection("labtest").doc(id).delete();
+    } catch (err) {
       print(err);
     }
   }
+
   var _isLoading;
-   double price;
-    String description;
-    String name;
-    String url;
-  Future <void> _editProduct(String id)async{
-    DocumentSnapshot document =  await FirebaseFirestore.instance.collection('labtest').doc(id).get();
-    name =(document.data() as Map<String, dynamic>)['Name'];
+  double price;
+  String description;
+  String name;
+  String url;
+  Future<void> _editProduct(String id) async {
+    DocumentSnapshot document =
+        await FirebaseFirestore.instance.collection('labtest').doc(id).get();
+    name = (document.data() as Map<String, dynamic>)['Name'];
     description = (document.data() as Map<String, dynamic>)['Description'];
     price = (document.data() as Map<String, dynamic>)['Price'];
     url = (document.data() as Map<String, dynamic>)['Image'];
-    
   }
 
   @override
   Widget build(BuildContext context) {
-   
     final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(title),
@@ -52,18 +52,15 @@ class LabProductItem extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () async{
-               await  _editProduct(id);
+              onPressed: () async {
+                await _editProduct(id);
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => EditLabsScreen(
-                    labId: id,
-                    name: name,
-                    price: price,
-                    description: description,
-                    url: url
-                  )
-                ));
-                    
+                    builder: (context) => EditLabsScreen(
+                        labId: id,
+                        name: name,
+                        price: price,
+                        description: description,
+                        url: url)));
               },
               color: Theme.of(context).primaryColor,
             ),
@@ -74,9 +71,12 @@ class LabProductItem extends StatelessWidget {
                   await _deleteLab(id);
                 } catch (error) {
                   print(error);
-                  scaffold.showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Deleting failed!', textAlign: TextAlign.center,),
+                      content: Text(
+                        'Deleting failed!',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   );
                 }

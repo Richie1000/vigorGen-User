@@ -19,33 +19,33 @@ class ProductItem extends StatelessWidget {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
-    final images = Provider.of<Products>(context, listen: false).images(product.id);
+    final images =
+        Provider.of<Products>(context, listen: false).images(product.id);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              ProductDetailScreen.routeName,
-              arguments: {
-                'productId':product.id,
-                
-                },
-            );
-          },
-          child: Hero(
-            tag: product.id,
-            child: FadeInImage (
-              placeholder: AssetImage('assets/images/drug.png',  ), 
-              image: NetworkImage(product.imageUrl),
-              fit: BoxFit.cover,
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                ProductDetailScreen.routeName,
+                arguments: product.id,
+              );
+            },
+            child: Hero(
+              tag: product.id,
+              child: FadeInImage(
+                placeholder: AssetImage(
+                  'assets/images/drug.png',
+                ),
+                image: NetworkImage(product.imageUrl),
+                fit: BoxFit.cover,
               ),
-          ) 
-        ),
+            )),
         footer: GridTileBar(
-          subtitle: Text("GHS ${product.price}", style: TextStyle(
-            color: Colors.white
-          ) ,),
+          subtitle: Text(
+            "GHS ${product.price}",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Colors.black87,
           // leading: Text("GHS ${product.price}", style: TextStyle(
           //   color: Colors.white
@@ -65,19 +65,19 @@ class ProductItem extends StatelessWidget {
           //       ),
           // ),
           title: Text(
-              product.title,
-              //overflow: TextOv,
-              //textAlign: TextAlign.center,
-              softWrap: true,
-                          ),
+            product.title,
+            //overflow: TextOv,
+            //textAlign: TextAlign.center,
+            softWrap: true,
+          ),
           trailing: IconButton(
             icon: Icon(
               Icons.shopping_cart,
             ),
             onPressed: () {
               cart.addItem(product.id, product.price, product.title);
-              Scaffold.of(context).hideCurrentSnackBar();
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     'Added item to cart!',

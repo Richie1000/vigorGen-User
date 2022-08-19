@@ -13,6 +13,7 @@ import '../providers/products.dart';
 import '../widgets/search_button.dart';
 import '../widgets/product_shimmer_grid.dart';
 import '../widgets/categories_list.dart';
+import '../widgets/grid_and_category.dart';
 
 enum FilterOptions {
   Favorites,
@@ -53,12 +54,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     _isInit = false;
     super.didChangeDependencies();
   }
-  Future<void>_refreshHanndler ()async{
-    return await Provider.of<Products>(context, listen: true).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+
+  Future<void> _refreshHanndler() async {
+    return await Provider.of<Products>(context, listen: true)
+        .fetchAndSetProducts()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
       });
+    });
   }
 
   @override
@@ -67,50 +71,37 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorLight,
         child: Consumer<Cart>(
-            builder: (_, cart, ch) => Badge(
-                  child: ch,
-                  value: cart.itemCount.toString(),
-                ),
-            child: IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(CartScreen.routeName);
-              },
-            ),
+          builder: (_, cart, ch) => Badge(
+            child: ch,
+            value: cart.itemCount.toString(),
           ),
+          child: IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
+          ),
+        ),
       ),
       appBar: AppBar(
-        title: Text('Vigor Gen', style: TextStyle(fontWeight: FontWeight.bold),),
-        actions: [
-          SearchButton()
-        ],
+        title: Text(
+          'Vigor Gen',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [SearchButton()],
         shadowColor: Colors.white,
         elevation: 0,
-        bottomOpacity: 0,systemOverlayStyle: SystemUiOverlayStyle.light,
+        bottomOpacity: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       drawer: AppDrawer(),
       body: LiquidPullToRefresh(
-        color: Theme.of(context).primaryColor,
-        animSpeedFactor: 1.5,
-        onRefresh: _refreshHanndler,
-              child: _isLoading
-            ? ShimmerGid()
-            : ListView(
-                          children: [Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [  
-                  
-                  CategoryList(),
-                  Expanded(flex: 2,
-                    child: ProductsGrid(_showOnlyFavorites),
-              ),
-                ] 
-              //ProductsGrid(_showOnlyFavorites),
-      ),
-    ),
-           ] )));
+          color: Theme.of(context).primaryColor,
+          animSpeedFactor: 1.5,
+          onRefresh: _refreshHanndler,
+          child: _isLoading ? ShimmerGid() : GridwithCategoryList()),
+    );
   }
 }

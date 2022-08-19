@@ -9,12 +9,12 @@ import '../models/http_exception.dart';
 import '../widgets/splash_screen.dart';
 
 enum AuthMode { Signup, Login }
+
 bool forgotPassword = false;
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
-  
-  
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -68,7 +68,8 @@ class AuthScreen extends StatelessWidget {
                       child: Text(
                         'Vigor Gen',
                         style: TextStyle(
-                          color: Theme.of(context).accentTextTheme.headline6.color,
+                          color:
+                              Theme.of(context).accentTextTheme.headline6.color,
                           fontSize: 50,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
@@ -99,7 +100,8 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin{
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -111,20 +113,24 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _opacityAnimation;
-  final DateTime startTimer = DateTime(2022, 7,19,15,27,00);
-  final DateTime endTimer = DateTime(2022, 7, 23, 00, 35,00 );
+  final DateTime startTimer = DateTime(2022, 7, 19, 15, 27, 00);
+  final DateTime endTimer = DateTime(2022, 7, 23, 00, 35, 00);
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300) );
-    _slideAnimation = Tween<Offset>(begin: Offset(0, -1.5), end: Offset(0, 0)).animate(CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _slideAnimation = Tween<Offset>(begin: Offset(0, -1.5), end: Offset(0, 0))
+        .animate(
+            CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
     //_heightAnimation.addListener(() =>setState(() {
-      
-    //}));
-    _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
+    //}));
+    _opacityAnimation = Tween(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -137,22 +143,21 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-            title: Text('An Error Occurred!'),
-            content: Text(message),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Okay'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
+        title: Text('An Error Occurred!'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
     );
   }
 
   Future<void> _submit() async {
-
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -167,23 +172,21 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.Login && forgotPassword ==false) {
+      if (_authMode == AuthMode.Login && forgotPassword == false) {
         // Log user in
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
         );
-      } else if(_authMode == AuthMode.Signup && forgotPassword ==false){
-         // Sign user up
+      } else if (_authMode == AuthMode.Signup && forgotPassword == false) {
+        // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
           _authData['email'],
           _authData['password'],
         );
-
-       
-      }
-      else {
-         await Provider.of<Auth>(context, listen: false).resetPassword(_authData['email']);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .resetPassword(_authData['email']);
         print("try");
       }
     } on HttpException catch (error) {
@@ -202,10 +205,9 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       }
       _showErrorDialog(errorMessage);
       HapticFeedback.lightImpact();
-      
     } catch (error) {
       print(error);
-       var errorMessage = 'Authentication failed';
+      var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
@@ -242,43 +244,46 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     }
   }
 
-  void _switchForgetPasswordMode(){
-    if (forgotPassword == false)
-    {setState(() {
-      forgotPassword = true;
-    });}
+  void _switchForgetPasswordMode() {
+    if (forgotPassword == false) {
+      setState(() {
+        forgotPassword = true;
+      });
+    }
   }
 
-  bool _enablefields (){
-    if ((_authMode == AuthMode.Login||_authMode == AuthMode.Signup) && forgotPassword == true ){
+  bool _enablefields() {
+    if ((_authMode == AuthMode.Login || _authMode == AuthMode.Signup) &&
+        forgotPassword == true) {
       return false;
-    }
-    else if ((_authMode == AuthMode.Login||_authMode == AuthMode.Signup) && forgotPassword == false ){
+    } else if ((_authMode == AuthMode.Login || _authMode == AuthMode.Signup) &&
+        forgotPassword == false) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
-  String _buttonText(){
-    if((_authMode == AuthMode.Login) && forgotPassword == true){
+
+  String _buttonText() {
+    if ((_authMode == AuthMode.Login) && forgotPassword == true) {
       print(forgotPassword);
       return "Reset Password";
     }
-    if((_authMode == AuthMode.Signup) && forgotPassword == true){
+    if ((_authMode == AuthMode.Signup) && forgotPassword == true) {
       print(forgotPassword);
       return "Reset Password";
     }
-    if((_authMode == AuthMode.Login) && forgotPassword == false){
+    if ((_authMode == AuthMode.Login) && forgotPassword == false) {
       print(forgotPassword);
       return "Login";
     }
-    if((_authMode == AuthMode.Signup) && forgotPassword == false){
+    if ((_authMode == AuthMode.Signup) && forgotPassword == false) {
       print(forgotPassword);
       return "SignUp";
     }
   }
-  Future<void> _tryPasswordReset()async{
+
+  Future<void> _tryPasswordReset() async {
     _formKey.currentState.save();
     setState(() {
       _isLoading = true;
@@ -286,80 +291,75 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     });
     try {
       //print("midway");
-     await Provider.of<Auth>(context, listen: false).resetPassword(_authData["email"]);
-     Scaffold.of(context).showSnackBar(SnackBar(content: Text("Password reset Successful, Check Your Email")));
-     forgotPassword = false;
-       _authMode = AuthMode.Signup;
-       _switchAuthMode();
-     setState(() {
-       
-     });
-     //print("done");
-    }
-    catch(error){
+      await Provider.of<Auth>(context, listen: false)
+          .resetPassword(_authData["email"]);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Password reset Successful, Check Your Email")));
+      forgotPassword = false;
+      _authMode = AuthMode.Signup;
+      _switchAuthMode();
+      setState(() {});
+      //print("done");
+    } catch (error) {
       print(error);
     }
     setState(() {
       _isLoading = false;
     });
-    
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 8.0,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 350 : 300,
-        //height:_heightAnimation.value.height,
-        constraints:
-            BoxConstraints(minHeight:_authMode == AuthMode.Signup ? 350 : 300),
-        width: deviceSize.width * 0.75,
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value;
-                  },
-                ),
-                TextFormField(
-                  enabled: _enablefields(),
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = value;
-                  },
-                ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 8.0,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+          height: _authMode == AuthMode.Signup ? 350 : 300,
+          //height:_heightAnimation.value.height,
+          constraints: BoxConstraints(
+              minHeight: _authMode == AuthMode.Signup ? 350 : 300),
+          width: deviceSize.width * 0.75,
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'E-Mail'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Invalid email!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['email'] = value;
+                    },
+                  ),
+                  TextFormField(
+                    enabled: _enablefields(),
+                    decoration: InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'Password is too short!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['password'] = value;
+                    },
+                  ),
                   AnimatedContainer(
                     constraints: BoxConstraints(
-                      minHeight: _authMode == AuthMode.Signup ? 60 :0,
-                      maxHeight: _authMode == AuthMode.Signup ? 120 : 0
-                    ),
+                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0),
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                     child: FadeTransition(
@@ -368,7 +368,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                         position: _slideAnimation,
                         child: TextFormField(
                           enabled: _enablefields(),
-                          decoration: InputDecoration(labelText: 'Confirm Password'),
+                          decoration:
+                              InputDecoration(labelText: 'Confirm Password'),
                           obscureText: true,
                           validator: _authMode == AuthMode.Signup
                               ? (value) {
@@ -381,53 +382,63 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                       ),
                     ),
                   ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                  onPressed: _switchForgetPasswordMode, 
-                  child: Text("Forgot Password")),
-                if (_isLoading)
-                  CircularProgressIndicator()
-                else
-                  if(forgotPassword== false)
-                  RaisedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login? "Login": "Sign Up"),
-                    onPressed: _submit,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  SizedBox(
+                    height: 20,
                   ),
-                  if(forgotPassword== true)
-                  RaisedButton(
-                    child:
-                        Text("Reset Password"),
-                    onPressed: _tryPasswordReset,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                  TextButton(
+                      onPressed: _switchForgetPasswordMode,
+                      child: Text("Forgot Password")),
+                  if (_isLoading)
+                    CircularProgressIndicator()
+                  else if (forgotPassword == false)
+                    ElevatedButton(
+                      child: Text(
+                          _authMode == AuthMode.Login ? "Login" : "Sign Up"),
+                      onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        primary: Theme.of(context).primaryColor,
+                        textStyle: TextStyle(
+                          color:
+                              Theme.of(context).primaryTextTheme.button.color,
+                        ),
+                        //textColor: Theme.of(context).primaryTextTheme.button.color,)
+                      ),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  if (forgotPassword == true)
+                    ElevatedButton(
+                      child: Text("Reset Password"),
+                      onPressed: _tryPasswordReset,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        primary: Theme.of(context).primaryColor,
+                        textStyle: TextStyle(
+                          color:
+                              Theme.of(context).primaryTextTheme.button.color,
+                        ),
+                        //textColor: Theme.of(context).primaryTextTheme.button.color,)
+                      ),
+                    ),
+                  TextButton(
+                    child: Text(
+                        '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    onPressed: _switchAuthMode,
+                    // padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                    // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    // textColor: Theme.of(context).primaryColor,
                   ),
-                FlatButton(
-                  child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
-                  onPressed: _switchAuthMode,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  textColor: Theme.of(context).primaryColor,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),) 
-      );
+        ));
   }
 }

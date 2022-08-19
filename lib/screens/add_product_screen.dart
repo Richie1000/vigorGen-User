@@ -50,7 +50,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
-  void didChangeDependencies() async{
+  void didChangeDependencies() async {
     if (_isInit) {
       final productId = ModalRoute.of(context).settings.arguments as String;
       if (productId != null) {
@@ -124,13 +124,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
             .child(DateTime.now().toIso8601String() + '.jpg');
 
         //manipulating ref to a future so as to await it
-       final File newFile = File(_pickedImage.path);
+        final File newFile = File(_pickedImage.path);
         await ref.putFile(newFile);
 
         //getting image url to work on
         final url = await ref.getDownloadURL();
         _imageUrlController.text = url;
-        _editedProduct.imageUrl =url;
+        _editedProduct.imageUrl = url;
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
       } catch (error) {
@@ -140,7 +140,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             title: Text('An error occurred!'),
             content: Text('Something went wrong.'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Okay'),
                 onPressed: () {
                   Navigator.of(ctx).pop();
@@ -267,16 +267,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 20
-                    ),
+                    SizedBox(height: 20),
                     Row(
                         //crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(child: UserImagePicker(_selectImage ) )
+                          Container(child: UserImagePicker(_selectImage))
                         ]),
-
-                    
                   ],
                 ),
               ),

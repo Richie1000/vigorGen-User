@@ -88,6 +88,14 @@ class MyApp extends StatelessWidget {
               primarySwatch: kPrimaryColor,
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato',
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: TextButton.styleFrom(backgroundColor: Colors.purple)),
+              textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                textStyle: TextStyle(color: Colors.purple),
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              )),
               pageTransitionsTheme: PageTransitionsTheme(builders: {
                 TargetPlatform.android: CustomPageTransitionBuilder(),
                 TargetPlatform.iOS: CustomPageTransitionBuilder()
@@ -99,7 +107,7 @@ class MyApp extends StatelessWidget {
                   builder: (context, authResultSnapshot) =>
                       authResultSnapshot.connectionState ==
                               ConnectionState.waiting
-                          ? LoadingScreen()
+                          ? MyCustomSplashScreen()
                           : AuthScreen()),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
@@ -111,10 +119,11 @@ class MyApp extends StatelessWidget {
             AddLabService.routeName: (ctx) => AddLabService(),
             ManageLabs.routeName: (ctx) => ManageLabs(),
             EditLabsScreen.routeName: (ctx) => EditLabsScreen(),
-            LabCartScreen.routeName: (ctx)=> LabCartScreen(),
-            LabRequestDetailsScreen.routeName: (ctx)=> LabRequestDetailsScreen(),
+            LabCartScreen.routeName: (ctx) => LabCartScreen(),
+            LabRequestDetailsScreen.routeName: (ctx) =>
+                LabRequestDetailsScreen(),
             CheckOutScreen.routeName: (ctx) => CheckOutScreen(),
-            ChatBotScreen.routeName: (ctx)=> ChatBotScreen()
+            ChatBotScreen.routeName: (ctx) => ChatBotScreen()
           },
         ),
       ),
