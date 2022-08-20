@@ -13,14 +13,14 @@ import '../screens/lab_cart_screen.dart';
 import '../providers/lab_cart.dart';
 import './lab_request_details_screen.dart';
 import './lab_cart_screen.dart';
-
+import './menu_screen.dart';
 
 class LabScreen extends StatelessWidget {
-    static const routeName = "./LabScreen";
+  static const routeName = "./LabScreen";
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
         appBar: AppBar(
             actions: [
@@ -38,7 +38,7 @@ class LabScreen extends StatelessWidget {
             title: Text("Vigor Gen"),
             centerTitle: true,
             systemOverlayStyle: SystemUiOverlayStyle.light),
-        drawer: AppDrawer(),
+        drawer: Menu(),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('labtest').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> labtestSnapshot) {

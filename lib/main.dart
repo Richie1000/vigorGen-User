@@ -15,7 +15,7 @@ import './screens/orders_screen.dart';
 import './screens/user_products_screen.dart';
 import 'screens/add_product_screen.dart';
 import './screens/auth_screen.dart';
-import './widgets/splash_screen.dart';
+import 'widgets/loading_screen.dart';
 import './helpers/custom_route.dart';
 import './screens/lab_services_screen.dart';
 import './providers/labtest.dart';
@@ -27,6 +27,7 @@ import 'screens/lab_cart_screen.dart';
 import 'screens/lab_request_details_screen.dart';
 import './screens/checkout_screen.dart';
 import './screens/chatbot_screen.dart';
+import './screens/splash_screen.dart';
 
 const MaterialColor kPrimaryColor = const MaterialColor(
   0xFFEF9A9A,
@@ -43,6 +44,7 @@ const MaterialColor kPrimaryColor = const MaterialColor(
     900: const Color(0xFFEF9A9A),
   },
 );
+bool showSplash = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  bool showSplashScreen() {
+    if (showSplash) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -101,13 +111,13 @@ class MyApp extends StatelessWidget {
                 TargetPlatform.iOS: CustomPageTransitionBuilder()
               })),
           home: auth.isAuth
-              ? ProductsOverviewScreen()
+              ? MyCustomSplashScreen()
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (context, authResultSnapshot) =>
                       authResultSnapshot.connectionState ==
                               ConnectionState.waiting
-                          ? MyCustomSplashScreen()
+                          ? LoadingScreen()
                           : AuthScreen()),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),

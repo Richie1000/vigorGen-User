@@ -1,161 +1,55 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class MyCustomSplashScreen extends StatefulWidget {
-  @override
-  _MyCustomSplashScreenState createState() => _MyCustomSplashScreenState();
-}
-
-class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
-    with TickerProviderStateMixin {
-  double _fontSize = 2;
-  double _containerSize = 1.5;
-  double _textOpacity = 0.0;
-  double _containerOpacity = 0.0;
-
-  AnimationController _controller;
-  Animation<double> animation1;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 3));
-
-    animation1 = Tween<double>(begin: 40, end: 20).animate(CurvedAnimation(
-        parent: _controller, curve: Curves.fastLinearToSlowEaseIn))
-      ..addListener(() {
-        setState(() {
-          _textOpacity = 1.0;
-        });
-      });
-
-    _controller.forward();
-
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        _fontSize = 1.06;
-      });
-    });
-
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        _containerSize = 2;
-        _containerOpacity = 1;
-      });
-    });
-
-    Timer(Duration(seconds: 4), () {
-      setState(() {
-        Navigator.pushReplacement(context, PageTransition(SecondPage()));
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      backgroundColor: Colors.deepPurple,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              AnimatedContainer(
-                  duration: Duration(milliseconds: 2000),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  height: _height / _fontSize),
-              AnimatedOpacity(
-                duration: Duration(milliseconds: 1000),
-                opacity: _textOpacity,
-                child: Text(
-                  'YOUR APP\'S NAME',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: animation1.value,
-                  ),
-                ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.transparent,
+        //we use Stack(); because we want the effects be on top of each other,
+        //  just like layer in photoshop.
+        child: Stack(
+          children: [
+            //blur effect ==> the third layer of stack
+            BackdropFilter(
+              filter: ImageFilter.blur(
+                //sigmaX is the Horizontal blur
+                sigmaX: 4.0,
+                //sigmaY is the Vertical blur
+                sigmaY: 4.0,
               ),
-            ],
-          ),
-          Center(
-            child: AnimatedOpacity(
-              duration: Duration(milliseconds: 2000),
-              curve: Curves.fastLinearToSlowEaseIn,
-              opacity: _containerOpacity,
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 2000),
-                curve: Curves.fastLinearToSlowEaseIn,
-                height: _width / _containerSize,
-                width: _width / _containerSize,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                // child: Image.asset('assets/images/file_name.png')
-                child: Text(
-                  'YOUR APP\'S LOGO',
-                ),
+              //we use this container to scale up the blur effect to fit its
+              //  parent, without this container the blur effect doesn't appear.
+              child: Container(),
+            ),
+            //gradient effect ==> the second layer of stack
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Colors.white.withOpacity(0.13)),
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      //begin color
+                      Colors.white.withOpacity(0.15),
+                      //end color
+                      Colors.white.withOpacity(0.05),
+                    ]),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PageTransition extends PageRouteBuilder {
-  final Widget page;
-
-  PageTransition(this.page)
-      : super(
-          pageBuilder: (context, animation, anotherAnimation) => page,
-          transitionDuration: Duration(milliseconds: 2000),
-          transitionsBuilder: (context, animation, anotherAnimation, child) {
-            animation = CurvedAnimation(
-              curve: Curves.fastLinearToSlowEaseIn,
-              parent: animation,
-            );
-            return Align(
-              alignment: Alignment.bottomCenter,
-              child: SizeTransition(
-                sizeFactor: animation,
-                child: page,
-                axisAlignment: 0,
-              ),
-            );
-          },
-        );
-}
-
-class SecondPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        brightness: Brightness.dark,
-        backgroundColor: Colors.deepPurple,
-        centerTitle: true,
-        title: Text(
-          'YOUR APP\'S NAME',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+            //child ==> the first/top layer of stack
+            Center(
+                child: SpinKitDualRing(
+              size: 100,
+              color: Colors.blue,
+            )),
+          ],
         ),
       ),
     );

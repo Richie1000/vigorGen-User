@@ -14,6 +14,7 @@ import '../widgets/search_button.dart';
 import '../widgets/product_shimmer_grid.dart';
 import '../widgets/categories_list.dart';
 import '../widgets/grid_and_category.dart';
+import './menu_screen.dart';
 
 enum FilterOptions {
   Favorites,
@@ -86,6 +87,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ),
       ),
       appBar: AppBar(
+        leading: DrawerWidget(),
         title: Text(
           'Vigor Gen',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -96,7 +98,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         bottomOpacity: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      drawer: AppDrawer(),
+      //drawer: AppDrawer(),
       body: LiquidPullToRefresh(
           color: Theme.of(context).primaryColor,
           animSpeedFactor: 1.5,

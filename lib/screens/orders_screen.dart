@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
+import './menu_screen.dart';
 
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/orders';
@@ -15,7 +16,7 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Your Orders'),
       ),
-      drawer: AppDrawer(),
+      drawer: Menu(),
       body: FutureBuilder(
         future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
         builder: (ctx, dataSnapshot) {
@@ -31,9 +32,9 @@ class OrdersScreen extends StatelessWidget {
             } else {
               return Consumer<Orders>(
                 builder: (ctx, orderData, child) => ListView.builder(
-                      itemCount: orderData.orders.length,
-                      itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
-                    ),
+                  itemCount: orderData.orders.length,
+                  itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
+                ),
               );
             }
           }

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
-import '../widgets/splash_screen.dart';
+import '../widgets/loading_screen.dart';
 
 enum AuthMode { Signup, Login }
 
