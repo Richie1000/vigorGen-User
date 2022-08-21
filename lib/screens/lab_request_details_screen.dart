@@ -13,8 +13,8 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _dropdownItems1 = ["At Home", "On Premise"];
   final _dropdownItems2 = ["Male", "Female"];
-  String _dropdownvalue1 ;
-  String _dropdownValue2 ;
+  String _dropdownvalue1 = "At Home";
+  String _dropdownValue2 = "Male" ;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -30,10 +30,9 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
             },
           ),
         ),
-        body: SingleChildScrollView(
-          child: Form(
+        body: Form(
             key: _formKey,
-            child: Column(
+            child: ListView(
                 //crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("Almost Done but Provide more details first", style: TextStyle(
@@ -93,12 +92,13 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
                     // padding: EdgeInsets.all(10),
                     // width: size.width / 1.5,
                     // //height: size.height/6.5,
-                    Row (
+                    Column (
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Place of Sample Taking"),
                 
                       DropdownButton(
-                        isExpanded: true,
+                        //isExpanded: true,
                         value: _dropdownvalue1,
                         items: _dropdownItems1.map(buildMenuItems).toList(),
                         onChanged: (value) {
@@ -115,28 +115,55 @@ class _LabRequestDetailsScreenState extends State<LabRequestDetailsScreen> {
                     //height: size.height/6.5,
                     child: Row( 
                       children: [
-                        Text("Sex", style: TextStyle(
-                          fontSize: 20
-                        ),),
-                        DropdownButton(
-                      isExpanded: true,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text("Sex: ", style: TextStyle(
+                            fontSize: 20
+                          ),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: DropdownButton(
+                      //isExpanded: true,
                       value: _dropdownValue2,
                       items: _dropdownItems2.map(buildMenuItems).toList(),
                       onChanged: (value) {
-                        setState(() {
-                          _dropdownValue2 = value;
-                        },);
+                          setState(() {
+                            _dropdownValue2 = value;
+                          },);
                       },
-                    ),],)
+                    ),
+                        ),],)
                   ),
-                  ElevatedButton(
+                  Row(
+                    children: [
+                    //width: size.width/3,
+                    // shape: Border.all(),
+                    // padding: EdgeInsets.all(5),
+                    //width: size.width/4,
+                    ElevatedButton(
                       //padding: EdgeInsets.all(10),
                       onPressed: () {
                         Navigator.of(context).pushNamed(LabCartScreen.routeName);
                       },
-                      child: Text("Proceed To Cart"))
+                      style: ButtonStyle(
+                        //maximumSize: (100, width/4),
+                        shape:  MaterialStateProperty.all<RoundedRectangleBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0),
+      
+      //side: BorderSide(color: Colors.red)
+    )
+
+  )
+                      ),
+                      child: Text("Proceed To Cart")),
+                      SizedBox(
+                        width: size.width/3
+                      )
+                      ],)
                 ]),
           ),
-        ),);
+        );
   }
 }

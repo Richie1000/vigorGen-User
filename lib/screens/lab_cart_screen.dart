@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/lab_request_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/lab_cart.dart';
@@ -85,17 +86,18 @@ class _OrderButtonState extends State<OrderButton> {
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
           ? null
           : () async {
-              setState(() {
-                _isLoading = true;
-              });
-              await Provider.of<Orders>(context, listen: false).addLabOrder(
-                widget.cart.items.values.toList(),
-                widget.cart.totalAmount,
-              );
-              setState(() {
-                _isLoading = false;
-              });
-              widget.cart.clear();
+              // setState(() {
+              //   _isLoading = true;
+              // });
+              // await Provider.of<Orders>(context, listen: false).addLabOrder(
+              //   widget.cart.items.values.toList(),
+              //   widget.cart.totalAmount,
+              // );
+              // setState(() {
+              //   _isLoading = false;
+              // });
+              // widget.cart.clear();
+              Navigator.pushReplacementNamed(context, LabRequestDetailsScreen.routeName);
             },
       //textColor: Theme.of(context).primaryColor,
     );

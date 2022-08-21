@@ -99,7 +99,10 @@ class MyApp extends StatelessWidget {
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato',
               elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: TextButton.styleFrom(backgroundColor: Colors.purple)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor),
+                    
+                    ),
               textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
                 textStyle: TextStyle(color: Colors.purple),
