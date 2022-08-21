@@ -51,7 +51,7 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
 
     Timer(Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(Menu()));
+        Navigator.pushReplacementNamed(context, "/overview");
       });
     });
   }

@@ -52,7 +52,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           "Contact Us",
         ),
       ),
-      drawer: Menu(),
+      drawer: AppDrawer(),
       body: Container(
         child: Column(
           children: <Widget>[

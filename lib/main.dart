@@ -120,6 +120,7 @@ class MyApp extends StatelessWidget {
                           ? LoadingScreen()
                           : AuthScreen()),
           routes: {
+            "/overview": (ctx) => ProductsOverviewScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),

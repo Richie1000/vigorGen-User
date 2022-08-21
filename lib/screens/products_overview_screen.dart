@@ -87,7 +87,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ),
       ),
       appBar: AppBar(
-        leading: DrawerWidget(),
+        //leading: AppDrawer(),
         title: Text(
           'Vigor Gen',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -98,7 +98,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         bottomOpacity: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      //drawer: AppDrawer(),
+      drawer: AppDrawer(),
       body: LiquidPullToRefresh(
           color: Theme.of(context).primaryColor,
           animSpeedFactor: 1.5,

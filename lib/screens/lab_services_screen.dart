@@ -29,7 +29,8 @@ class LabScreen extends StatelessWidget {
                   Icons.shopping_cart,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(LabCartScreen.routeName);
+                  Navigator.of(context)
+                      .pushReplacementNamed(LabCartScreen.routeName);
                   // Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FormScreen()));
                 },
@@ -38,14 +39,18 @@ class LabScreen extends StatelessWidget {
             title: Text("Vigor Gen"),
             centerTitle: true,
             systemOverlayStyle: SystemUiOverlayStyle.light),
-        drawer: Menu(),
+        drawer: AppDrawer(),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('labtest').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> labtestSnapshot) {
             if (labtestSnapshot.connectionState == ConnectionState.waiting) {
               return SpinKitDualRing(color: Theme.of(context).primaryColor);
             }
+            if (!labtestSnapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
             final lab = labtestSnapshot.data.docs;
+            //print(lab);
 
             return ListView.builder(
                 itemCount: lab.length,

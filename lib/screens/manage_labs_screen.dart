@@ -33,7 +33,7 @@ class ManageLabs extends StatelessWidget {
             ),
           ],
         ),
-        drawer: Menu(),
+        drawer: AppDrawer(),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('labtest').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> labtestSnapshot) {
