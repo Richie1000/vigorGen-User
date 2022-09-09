@@ -5,6 +5,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import '../providers/cart.dart';
 import '../widgets/badge.dart';
 
 import '../widgets/lab_Item.dart';
@@ -53,15 +54,39 @@ class LabScreen extends StatelessWidget {
             //print(lab);
 
             return ListView.builder(
-                itemCount: lab.length,
-                itemBuilder: (context, index) => LabItem(
-                    id: (lab[index].data() as Map<String, dynamic>)['id'],
-                    title: (lab[index].data() as Map<String, dynamic>)['Name'],
-                    description: (lab[index].data()
-                        as Map<String, dynamic>)['Description'],
-                    price:
-                        (lab[index].data() as Map<String, dynamic>)['Price']));
+              itemCount: lab.length,
+              itemBuilder: (context, index) => LabItem(
+                id: (lab[index].data() as Map<String, dynamic>)['id'],
+                title: (lab[index].data() as Map<String, dynamic>)['Name'],
+                description:
+                    (lab[index].data() as Map<String, dynamic>)['Description'],
+                price: (lab[index].data() as Map<String, dynamic>)['Price'],
+              ),
+            );
           },
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColorLight,
+          child: Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+              onPressed: () {
+                onPressed:
+                () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(LabCartScreen.routeName);
+                  // Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FormScreen()));
+                };
+              },
+            ),
+          ),
         ));
   }
 }

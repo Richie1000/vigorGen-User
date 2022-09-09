@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 import './cart_screen.dart';
 import '../providers/cart.dart';
@@ -34,19 +35,23 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         builder: (context) => Container(
           color: Colors.white70,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Icon(
-              Icons.check_circle,
-              size: 70,
-              color: Colors.green,
+            Container(
+              height: MediaQuery.of(context).size.height / 2.7,
+              child: Lottie.asset("assets/images/delivery_animation.json",
+                  fit: BoxFit.contain, repeat: true),
             ),
             Row(
               children: [
                 Flexible(
                   child: Center(
-                    child: Text(
-                      "Thanks For shopping with us! \nYou will be notified when we are about to Deliver",
-                      softWrap: true,
-                      style: TextStyle(fontSize: 24),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      child: Text(
+                        "Thanks For shopping with us! \nYou will be notified when we are about to Deliver",
+                        softWrap: true,
+                        style: TextStyle(fontSize: 22),
+                      ),
                     ),
                   ),
                 ),

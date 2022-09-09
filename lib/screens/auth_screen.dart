@@ -115,6 +115,8 @@ class _AuthCardState extends State<AuthCard>
   Animation<double> _opacityAnimation;
   final DateTime startTimer = DateTime(2022, 7, 19, 15, 27, 00);
   final DateTime endTimer = DateTime(2022, 7, 23, 00, 35, 00);
+  bool is_visible = true;
+  bool obscure = true;
 
   @override
   void initState() {
@@ -308,6 +310,18 @@ class _AuthCardState extends State<AuthCard>
     });
   }
 
+  void setVisibility() {
+    setState(() {
+      is_visible = !is_visible;
+    });
+  }
+
+  void isVisible() {
+    setState(() {
+      obscure = !obscure;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -344,8 +358,16 @@ class _AuthCardState extends State<AuthCard>
                   ),
                   TextFormField(
                     enabled: _enablefields(),
-                    decoration: InputDecoration(labelText: 'Password'),
-                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        onPressed: setVisibility,
+                        icon: Icon(is_visible
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      ),
+                    ),
+                    obscureText: is_visible,
                     controller: _passwordController,
                     validator: (value) {
                       if (value.isEmpty || value.length < 5) {
@@ -368,9 +390,14 @@ class _AuthCardState extends State<AuthCard>
                         position: _slideAnimation,
                         child: TextFormField(
                           enabled: _enablefields(),
-                          decoration:
-                              InputDecoration(labelText: 'Confirm Password'),
-                          obscureText: true,
+                          decoration: InputDecoration(
+                              labelText: 'Confirm Password',
+                              suffixIcon: IconButton(
+                                  onPressed: isVisible,
+                                  icon: Icon(obscure
+                                      ? Icons.visibility_off
+                                      : Icons.visibility))),
+                          obscureText: obscure,
                           validator: _authMode == AuthMode.Signup
                               ? (value) {
                                   if (value != _passwordController.text) {
