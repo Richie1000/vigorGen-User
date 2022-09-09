@@ -49,14 +49,14 @@ class AppDrawer extends StatelessWidget {
           // ),
           //  Divider(),
           ListTile(
-            leading: Icon(Icons.water_drop),
-            title: Text('Request Laboratory Test'),
-            onTap: () {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LabScreen()),
-            );
-            }
-          ),
+              leading: Icon(Icons.water_drop),
+              title: Text('Request Laboratory Test'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LabScreen()),
+                );
+              }),
           // Divider(),
           // ListTile(
           //   leading: Icon(Icons.add_box),
@@ -75,12 +75,12 @@ class AppDrawer extends StatelessWidget {
           // ),
           Divider(),
           ListTile(
-            leading:Icon(Icons.chat_bubble_rounded),
-            title: Text("Chat Us"),
-            onTap: (){
-              Navigator.of(context).pushReplacementNamed(ChatBotScreen.routeName);
-            }
-          ),
+              leading: Icon(Icons.chat_bubble_rounded),
+              title: Text("Chat Us"),
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(ChatBotScreen.routeName);
+              }),
           Divider(),
           ListTile(
             leading: Icon(Icons.logout),
@@ -91,9 +91,6 @@ class AppDrawer extends StatelessWidget {
               Provider.of<Auth>(context, listen: false).logout();
             },
           ),
-          
-
-          
         ],
       ),
     );

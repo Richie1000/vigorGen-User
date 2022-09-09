@@ -53,17 +53,18 @@ class _LabItemState extends State<LabItem> {
           ),
           padding: EdgeInsets.all(10),
           height: isExpanded ? 70 : 330,
+          width: MediaQuery.of(context).size.width - 15,
           curve: Curves.fastLinearToSlowEaseIn,
           duration: Duration(milliseconds: 1200),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color(0xff6F12E8).withOpacity(0.5),
+                color: Theme.of(context).primaryColor,
                 blurRadius: 20,
                 offset: Offset(5, 10),
               ),
             ],
-            color: Color(0xff6F12E8),
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.all(
               Radius.circular(20),
             ),
