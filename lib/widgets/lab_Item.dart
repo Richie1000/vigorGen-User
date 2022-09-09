@@ -48,11 +48,11 @@ class _LabItemState extends State<LabItem> {
         },
         child: AnimatedContainer(
           margin: EdgeInsets.symmetric(
-            horizontal: isExpanded ? 25 : 0,
-            vertical: 10,
+            horizontal: isExpanded ? 20 : 0,
+            vertical: 15,
           ),
-          padding: EdgeInsets.all(10),
-          height: isExpanded ? 70 : 330,
+          padding: EdgeInsets.all(20),
+          height: isExpanded ? 120 : 330,
           width: MediaQuery.of(context).size.width - 15,
           curve: Curves.fastLinearToSlowEaseIn,
           duration: Duration(milliseconds: 1200),
@@ -64,7 +64,7 @@ class _LabItemState extends State<LabItem> {
                 offset: Offset(5, 10),
               ),
             ],
-            color: Theme.of(context).primaryColor,
+            color: Color(0xffFF5050),
             borderRadius: BorderRadius.all(
               Radius.circular(20),
             ),
@@ -74,14 +74,12 @@ class _LabItemState extends State<LabItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w400,
-                      ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Icon(
@@ -95,7 +93,8 @@ class _LabItemState extends State<LabItem> {
               ),
               isExpanded ? SizedBox() : SizedBox(height: 20),
               AnimatedCrossFade(
-                firstChild: Text(
+                firstChild: 
+                Text(
                   '',
                   style: TextStyle(
                     fontSize: 0,
@@ -104,7 +103,7 @@ class _LabItemState extends State<LabItem> {
                 secondChild: Column(
                   children: [
                     Text(
-                      description,
+                      isExpanded? "" : description,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.7,
@@ -147,7 +146,7 @@ class _LabItemState extends State<LabItem> {
                 crossFadeState: isExpanded
                     ? CrossFadeState.showFirst
                     : CrossFadeState.showSecond,
-                duration: Duration(milliseconds: 1200),
+                duration: Duration(milliseconds: 1500),
                 reverseDuration: Duration.zero,
                 sizeCurve: Curves.fastLinearToSlowEaseIn,
               ),

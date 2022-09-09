@@ -36,9 +36,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           color: Colors.white70,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(
-              height: MediaQuery.of(context).size.height / 2.7,
+              //height: MediaQuery.of(context).size.height / 2.5,
               child: Lottie.asset("assets/images/delivery_animation.json",
-                  fit: BoxFit.contain, repeat: true),
+                   repeat: true),
             ),
             Row(
               children: [
@@ -261,6 +261,7 @@ class _OrderButtonState extends State<OrderButton> {
               showBottomSheet(
                 context: context,
                 builder: (context) => Container(
+                  width: MediaQuery.of(context).size.width* 0.75,
                   color: Colors.white70,
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                     Icon(
@@ -270,7 +271,7 @@ class _OrderButtonState extends State<OrderButton> {
                     ),
                     Row(
                       children: [
-                        Flexible(
+                        Expanded(
                           child: Center(
                             child: Text(
                               "Thanks For shopping with us! \nYou will be notified when we are about to Deliver",

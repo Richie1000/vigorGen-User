@@ -70,14 +70,19 @@ class CartScreen extends StatelessWidget {
           ),
           if (cart.itemCount != 0)
             ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, CheckOutScreen.routeName);
-                },
-                child: Text(
-                  "Proceed",
-                  style: TextStyle(fontSize: 20),
-                ))
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                    context, CheckOutScreen.routeName);
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Theme.of(context).primaryColor),
+              ),
+              child: Text(
+                "Proceed",
+                style: TextStyle(fontSize: 20),
+              ),
+            )
         ],
       ),
     );

@@ -65,28 +65,29 @@ class LabScreen extends StatelessWidget {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColorLight,
-          child: Consumer<Cart>(
-            builder: (_, cart, ch) => Badge(
-              child: ch,
-              value: cart.itemCount.toString(),
-            ),
-            child: IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-              ),
-              onPressed: () {
-                onPressed:
-                () {
-                  Navigator.of(context)
-                      .pushReplacementNamed(LabCartScreen.routeName);
-                  // Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
-                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FormScreen()));
-                };
-              },
-            ),
-          ),
-        ));
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Theme.of(context).primaryColorLight,
+        //   child: Consumer<Cart>(
+        //     builder: (_, cart, ch) => Badge(
+        //       child: ch,
+        //       value: cart.itemCount.toString(),
+        //     ),
+        //     child: IconButton(
+        //       icon: Icon(
+        //         Icons.shopping_cart,
+        //       ),
+        //       onPressed: () {
+        //         onPressed:
+        //         () {
+        //           Navigator.of(context)
+        //               .pushReplacementNamed(LabCartScreen.routeName);
+        //           // Navigator.of(context).pushNamed(LabRequestDetailsScreen.routeName);
+        //           //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FormScreen()));
+        //         };
+        //       },
+        //     ),
+        //   ),
+        // ),
+        );
   }
 }
