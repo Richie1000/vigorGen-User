@@ -35,7 +35,7 @@ class ProductDetailScreen extends StatelessWidget {
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(loadedProduct.title),
+              //title: Text(loadedProduct.title),
               background: Hero(
                 tag: loadedProduct.id,
                 child: Image.network(
@@ -49,6 +49,7 @@ class ProductDetailScreen extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 10),
+                Text(loadedProduct.title, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),textAlign: TextAlign.center),
                 Text(
                   getCurrency() + ' ${loadedProduct.price}',
                   style: TextStyle(
@@ -65,7 +66,7 @@ class ProductDetailScreen extends StatelessWidget {
                   width: double.infinity,
                   child: Text(
                     loadedProduct.description,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     softWrap: true,
                   ),
                 ),

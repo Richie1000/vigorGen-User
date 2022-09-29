@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './products_grid.dart';
-import './categories_list.dart';
+import './cat_list.dart';
 
 class GridwithCategoryList extends StatelessWidget {
   const GridwithCategoryList({Key key}) : super(key: key);
@@ -16,7 +16,7 @@ class GridwithCategoryList extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CategoryList(),
+                ListOfCategories(),
                 Expanded(child: ProductsGrid(false))
               ]),
         ),

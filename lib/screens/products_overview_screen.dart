@@ -12,7 +12,6 @@ import './cart_screen.dart';
 import '../providers/products.dart';
 import '../widgets/search_button.dart';
 import '../widgets/product_shimmer_grid.dart';
-import '../widgets/categories_list.dart';
 import '../widgets/grid_and_category.dart';
 import './menu_screen.dart';
 
